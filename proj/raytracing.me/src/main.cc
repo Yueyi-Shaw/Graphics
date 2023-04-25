@@ -5,6 +5,7 @@
 
 color ray_color(const ray &r)
 {
+    // middium part is "lighter" than two ends because y here is normalized with x
     vec3 unit_direction = unit_vector(r.direction());
     auto t = 0.5 * (unit_direction.y() + 1.0);
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
