@@ -22,6 +22,30 @@ color ray_pure_sphere_color(const ray &r)
     return (1.0 - t) * color(1.0, 1.0, 1.0) + t * color(0.5, 0.7, 1.0);
 }
 
+double normal_sphere(const point3& center, double radius, const ray& r) {
+    vec3 oc = r.origin() - center;
+    auto a = dot(r.direction(), r.direction());
+    auto b = 2.0 * dot(oc, r.direction());
+    auto c = dot(oc, oc) - radius*radius;
+    auto discriminant = b*b - 4*a*c;
+    if (discriminant < 0) {
+        return -1.0;
+    } else {
+        return (-b - sqrt(discriminant) ) / (2.0*a);
+    }
+}
+
+color ray_normal_sphere_color(const ray& r) {
+    auto t = normal_sphere(point3(0,0,-1), 0.5, r);
+    if (t > 0.0) {
+        vec3 N = unit_vector(r.at(t) - vec3(0,0,-1));
+        return 0.5*color(N.x()+1, N.y()+1, N.z()+1);
+    }
+    vec3 unit_direction = unit_vector(r.direction());
+    t = 0.5*(unit_direction.y() + 1.0);
+    return (1.0-t)*color(1.0, 1.0, 1.0) + t*color(0.5, 0.7, 1.0);
+}
+
 color ray_color(const ray &r)
 {
     // middium part is "lighter" than two ends because y here is normalized with x
@@ -44,6 +68,7 @@ int main(int argc, char **argv)
 1 : Image 1: First PPM image \n \
 2 : Image 2: A blue-to-white gradient depending on ray Y coordinate \n \
 3 : Image 3: Image 3: A simple red sphere \n \
+4 : Image 4: A sphere colored according to its normal vectors \n \
 .ppm will be generate in ./img directory."
                       << std::endl;
         }
@@ -179,7 +204,7 @@ int main(int argc, char **argv)
                 auto u = double(i) / (image_width - 1);
                 auto v = double(j) / (image_height - 1);
                 ray r(origin, lower_left_corner + u * horizontal + v * vertical - origin);
-                color pixel_color = ray_pure_sphere_color(r);
+                color pixel_color = ray_normal_sphere_color(r);
                 write_color(std::cout, pixel_color);
             }
         }
