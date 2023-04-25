@@ -2,7 +2,7 @@ SOURCE_PATH := ./src
 OUT_DIR := ./out
 IMG_DIR :=./img
 SOURCE_FILES := $(wildcard $(SOURCE_PATH)/*.cc)
-
+HEADER_FILES := $(wildcard $(SOURCE_PATH)/*.h)
 # Overrides command line arguments
 # override lesson = 0, on wsl we don't need override keyword
 lesson = 0

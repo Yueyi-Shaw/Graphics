@@ -1,4 +1,5 @@
 #include <iostream>
+#include "vec3.h"
 
 int main(int argc, char** argv)
  {
@@ -7,7 +8,8 @@ int main(int argc, char** argv)
     for (int i = 0; i < argc; ++i) {
         std::cerr << argv[i] << std::endl;
     }
-
+    color vector(0,1,0);
+    std::cerr << "vector " << vector[1] << std::endl;
     // Image
 
     const int image_width = 256;
