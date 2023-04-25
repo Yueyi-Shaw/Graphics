@@ -34,6 +34,11 @@ asmfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cc),gcc -S $(var) -o ./out/
 assembly:
 	$(asmfunc)
 
+git-push:
+	git add --all
+	git commit -m "update"
+	git push
+
 .PHONY: clean
 clean:
 	rm ./out
