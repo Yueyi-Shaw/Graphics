@@ -27,7 +27,7 @@ build:
 		echo " $(OUT_DIR) not exists, mkdir" ;\
 		mkdir $(OUT_DIR);\
 	fi
-	gcc $(SOURCE_FILES) -o ./out/main -std=c++11 -lstdc++;
+	gcc $(SOURCE_FILES) -o ./out/main -std=c++11 -lstdc++ -lm;
 
 
 asmfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cc),gcc -S $(var) -o ./out/$(notdir $(var:%.cc=%.s));)
@@ -37,9 +37,11 @@ assembly:
 dasm:
 	objdump -d -M intel -s -j .text $(OUT_DIR)/main > $(OUT_DIR)/main.asm
 
+
+commit_message=update
 git-push:
 	git add --all
-	git commit -m "update"
+	git commit -m "$(commit_message)"
 	git push
 
 .PHONY: clean
