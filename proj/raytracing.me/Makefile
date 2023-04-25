@@ -30,9 +30,12 @@ build:
 	gcc $(SOURCE_FILES) -o ./out/main -std=c++11 -lstdc++;
 
 
-asmfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cc),gcc -S $(var) -o ./out/$(notdir $(var:%.cc=%.asm));)
+asmfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cc),gcc -S $(var) -o ./out/$(notdir $(var:%.cc=%.s));)
 assembly:
 	$(asmfunc)
+
+dasm:
+	objdump -d -M intel -s -j .text $(OUT_DIR)/main > $(OUT_DIR)/main.asm
 
 git-push:
 	git add --all
