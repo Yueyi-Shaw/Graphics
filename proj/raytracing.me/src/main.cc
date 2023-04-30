@@ -171,6 +171,10 @@ int main(int argc, char **argv)
 10 : Image 10: Rendering of diffuse spheres with hemispherical scattering \n \
 11 : Image 11: Shiny metal \n \
 12 : Image 12: Fuzzed metal \n \
+13 : Image 13: Glass first \n \
+14 : Image 14: Glass sphere that always refracts \n \
+15 : Image 15: Glass sphere that sometimes refracts \n \
+16 : Image 16: A hollow glass sphere \n \
 .ppm will be generate in ./img directory."
                       << std::endl;
         }
@@ -627,6 +631,199 @@ int main(int argc, char **argv)
         world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
         world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
         world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+        world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+        // Camera
+        camera cam;
+
+        // Render
+
+        std::cout << "P3\n"
+                  << image_width << ' ' << image_height << "\n255\n";
+
+        for (int j = image_height - 1; j >= 0; --j)
+        {
+            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i)
+            {
+                color pixel_color(0, 0, 0);
+                for (int s = 0; s < samples_per_pixel; ++s)
+                {
+                    auto u = (i + random_double()) / (image_width - 1);
+                    auto v = (j + random_double()) / (image_height - 1);
+                    ray r = cam.get_ray(u, v);
+                    pixel_color += ray_color_11(r, world, max_depth);
+                }
+                write_color_8(std::cout, pixel_color, samples_per_pixel);
+            }
+        }
+        break;
+    }
+    case 13:
+    {
+        // Image
+
+        const auto aspect_ratio = 16.0 / 9.0;
+        const int image_width = 400;
+        const int image_height = static_cast<int>(image_width / aspect_ratio);
+        const int samples_per_pixel = 100;
+        const int max_depth = 50;
+
+        // World
+        hittable_list world;
+        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+        auto material_center = make_shared<glassfirst>();
+        auto material_left = make_shared<glassfirst>();
+        auto material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+
+        world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
+        world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
+        world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+        world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+        // Camera
+        camera cam;
+
+        // Render
+
+        std::cout << "P3\n"
+                  << image_width << ' ' << image_height << "\n255\n";
+
+        for (int j = image_height - 1; j >= 0; --j)
+        {
+            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i)
+            {
+                color pixel_color(0, 0, 0);
+                for (int s = 0; s < samples_per_pixel; ++s)
+                {
+                    auto u = (i + random_double()) / (image_width - 1);
+                    auto v = (j + random_double()) / (image_height - 1);
+                    ray r = cam.get_ray(u, v);
+                    pixel_color += ray_color_11(r, world, max_depth);
+                }
+                write_color_8(std::cout, pixel_color, samples_per_pixel);
+            }
+        }
+        break;
+    }
+    case 14:
+    {
+        // Image
+
+        const auto aspect_ratio = 16.0 / 9.0;
+        const int image_width = 400;
+        const int image_height = static_cast<int>(image_width / aspect_ratio);
+        const int samples_per_pixel = 100;
+        const int max_depth = 50;
+
+        // World
+        hittable_list world;
+        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+        auto material_center = make_shared<dielectric_14>(1.5);
+        auto material_left = make_shared<dielectric_14>(1.5);
+        auto material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 1.0);
+
+        world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
+        world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
+        world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+        world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+        // Camera
+        camera cam;
+
+        // Render
+
+        std::cout << "P3\n"
+                  << image_width << ' ' << image_height << "\n255\n";
+
+        for (int j = image_height - 1; j >= 0; --j)
+        {
+            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i)
+            {
+                color pixel_color(0, 0, 0);
+                for (int s = 0; s < samples_per_pixel; ++s)
+                {
+                    auto u = (i + random_double()) / (image_width - 1);
+                    auto v = (j + random_double()) / (image_height - 1);
+                    ray r = cam.get_ray(u, v);
+                    pixel_color += ray_color_11(r, world, max_depth);
+                }
+                write_color_8(std::cout, pixel_color, samples_per_pixel);
+            }
+        }
+        break;
+    }
+    case 15:
+    {
+        // Image
+
+        const auto aspect_ratio = 16.0 / 9.0;
+        const int image_width = 400;
+        const int image_height = static_cast<int>(image_width / aspect_ratio);
+        const int samples_per_pixel = 100;
+        const int max_depth = 50;
+
+        // World
+        hittable_list world;
+        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+        auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
+        auto material_left = make_shared<dielectric_15>(1.5);
+        auto material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+
+        world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
+        world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
+        world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+        world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
+
+        // Camera
+        camera cam;
+
+        // Render
+
+        std::cout << "P3\n"
+                  << image_width << ' ' << image_height << "\n255\n";
+
+        for (int j = image_height - 1; j >= 0; --j)
+        {
+            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
+            for (int i = 0; i < image_width; ++i)
+            {
+                color pixel_color(0, 0, 0);
+                for (int s = 0; s < samples_per_pixel; ++s)
+                {
+                    auto u = (i + random_double()) / (image_width - 1);
+                    auto v = (j + random_double()) / (image_height - 1);
+                    ray r = cam.get_ray(u, v);
+                    pixel_color += ray_color_11(r, world, max_depth);
+                }
+                write_color_8(std::cout, pixel_color, samples_per_pixel);
+            }
+        }
+        break;
+    }
+    case 16:
+    {
+        // Image
+
+        const auto aspect_ratio = 16.0 / 9.0;
+        const int image_width = 400;
+        const int image_height = static_cast<int>(image_width / aspect_ratio);
+        const int samples_per_pixel = 100;
+        const int max_depth = 50;
+
+        // World
+        hittable_list world;
+        auto material_ground = make_shared<lambertian>(color(0.8, 0.8, 0.0));
+        auto material_center = make_shared<lambertian>(color(0.1, 0.2, 0.5));
+        auto material_left = make_shared<dielectric>(1.5);
+        auto material_right = make_shared<metal>(color(0.8, 0.6, 0.2), 0.0);
+
+        world.add(make_shared<sphere>(point3(0.0, -100.5, -1.0), 100.0, material_ground));
+        world.add(make_shared<sphere>(point3(0.0, 0.0, -1.0), 0.5, material_center));
+        world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), 0.5, material_left));
+        world.add(make_shared<sphere>(point3(-1.0, 0.0, -1.0), -0.4, material_left));
         world.add(make_shared<sphere>(point3(1.0, 0.0, -1.0), 0.5, material_right));
 
         // Camera
