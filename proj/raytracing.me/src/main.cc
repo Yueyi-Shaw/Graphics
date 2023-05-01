@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "material.h"
 #include <iostream>
+#include <thread>
 
 bool pure_sphere(const point3 &center, double radius, const ray &r)
 {
@@ -201,6 +202,30 @@ hittable_list random_scene()
     world.add(make_shared<sphere>(point3(4, 1, 0), 1.0, material3));
 
     return world;
+}
+
+const int THREAD_NUMBER = 24;
+void render_task(color **buffer, int index, int image_width, int image_height, int samples_per_pixel, int max_depth, hittable &world, dofcamera &cam)
+{
+    int width_min = image_width / THREAD_NUMBER * index;
+    int width_max = std::min(image_width / THREAD_NUMBER * (index + 1), image_width);
+    int height = image_height;
+    for (int j = height - 1; j >= 0; --j)
+    {
+        std::cerr << "\rScanlines remaining: [thread]:" << index << "[remain]" << j << ' ' << std::flush;
+        for (int i = width_min; i < width_max; ++i)
+        {
+            color pixel_color(0, 0, 0);
+            for (int s = 0; s < samples_per_pixel; ++s)
+            {
+                auto u = (i + random_double()) / (image_width - 1);
+                auto v = (j + random_double()) / (image_height - 1);
+                ray r = cam.get_ray(u, v);
+                pixel_color += ray_color_11(r, world, max_depth);
+            }
+            buffer[i][j] = pixel_color;
+        }
+    }
 }
 
 int main(int argc, char **argv)
@@ -1194,20 +1219,49 @@ int main(int argc, char **argv)
         std::cout << "P3\n"
                   << image_width << ' ' << image_height << "\n255\n";
 
+        // start multithreads to render
+
+        color **frame_buffer = new color *[image_width];
+        for (int i = 0; i < image_width; i++)
+        {
+            frame_buffer[i] = new color[image_height]();
+        }
+
+        std::thread threads[THREAD_NUMBER];
+        // start threads
+        for (int i = 0; i < THREAD_NUMBER; i++)
+        {
+            threads[i] = std::thread(render_task, std::ref(frame_buffer), i, image_width, image_height, samples_per_pixel, max_depth, std::ref(world), std::ref(cam));
+        }
+
+        // wait all threads
+        for (std::thread &t : threads)
+        {
+            t.join();
+        }
+
+        std::cerr << "All threads have completed." << std::endl;
+
         for (int j = image_height - 1; j >= 0; --j)
         {
-            std::cerr << "\rScanlines remaining: " << j << ' ' << std::flush;
             for (int i = 0; i < image_width; ++i)
             {
-                color pixel_color(0, 0, 0);
-                for (int s = 0; s < samples_per_pixel; ++s)
-                {
-                    auto u = (i + random_double()) / (image_width - 1);
-                    auto v = (j + random_double()) / (image_height - 1);
-                    ray r = cam.get_ray(u, v);
-                    pixel_color += ray_color_11(r, world, max_depth);
-                }
-                write_color_8(std::cout, pixel_color, samples_per_pixel);
+                color pixel_color = frame_buffer[i][j];
+
+                auto r = pixel_color.x();
+                auto g = pixel_color.y();
+                auto b = pixel_color.z();
+
+                // Divide the color by the number of samples and gamma-correct for gamma=2.0.
+                auto scale = 1.0 / samples_per_pixel;
+                r = sqrt(scale * r);
+                g = sqrt(scale * g);
+                b = sqrt(scale * b);
+
+                // Write the translated [0,255] value of each color component.
+                std::cout << static_cast<int>(256 * clamp(r, 0.0, 0.999)) << ' '
+                          << static_cast<int>(256 * clamp(g, 0.0, 0.999)) << ' '
+                          << static_cast<int>(256 * clamp(b, 0.0, 0.999)) << '\n';
             }
         }
         break;
