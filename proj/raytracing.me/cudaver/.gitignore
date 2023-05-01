@@ -1,4 +1,4 @@
 
-/oneweekend/*.exp
-/oneweekend/*.lib
-/oneweekend/*.exe
+/oneweekend/*/*.exp
+/oneweekend/*/*.lib
+/oneweekend/*/*.exe
