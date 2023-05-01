@@ -27,7 +27,7 @@ build:
 		echo " $(OUT_DIR) not exists, mkdir" ;\
 		mkdir $(OUT_DIR);\
 	fi
-	gcc $(SOURCE_FILES) -o ./out/main -std=c++11 -lstdc++ -lm;
+	gcc $(SOURCE_FILES) -O3 -o ./out/main -std=c++11 -lstdc++ -lm;
 
 
 asmfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cc),gcc -S $(var) -o ./out/$(notdir $(var:%.cc=%.s));)
