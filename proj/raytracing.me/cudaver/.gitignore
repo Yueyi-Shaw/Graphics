@@ -2,3 +2,4 @@
 /oneweekend/*/*.exp
 /oneweekend/*/*.lib
 /oneweekend/*/*.exe
+/oneweekend/*/*.out
