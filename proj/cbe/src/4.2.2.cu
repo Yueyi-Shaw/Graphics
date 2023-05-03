@@ -1,5 +1,9 @@
 #include "../common/book.h"
 #include "../common/timer.h"
+#include "../common/cpu_bitmap.h"
+#include <iostream>
+
+#define DIM 1000
 
 struct cuComplex
 {
@@ -34,7 +38,7 @@ int julia(int x, int y)
     return 1;
 }
 
-oid kernel(unsigned char *ptr)
+void kernel(unsigned char *ptr)
 {
     for (int y = 0; y < DIM; y++)
     {
@@ -50,10 +54,36 @@ oid kernel(unsigned char *ptr)
     }
 }
 
+void output_image(unsigned char *ptr)
+{
+    std::cout << "P3\n"
+                  << DIM << ' ' << DIM << "\n255\n";
+
+    for (int y = 0; y < DIM; y++)
+    {
+        for (int x = 0; x < DIM; x++)
+        {
+            int offset = x + y * DIM;
+
+            auto r = ptr[offset * 4 + 0];
+            auto g = ptr[offset * 4 + 1];
+            auto b = ptr[offset * 4 + 2];
+
+            // Write the translated [0,255] value of each color component.
+            std::cout << static_cast<int>(r) << ' '
+                      << static_cast<int>(g) << ' '
+                      << static_cast<int>(b) << '\n';
+        }
+    }
+}
+
 int main(void)
 {
     CPUBitmap bitmap(DIM, DIM);
     unsigned char *ptr = bitmap.get_ptr();
     kernel(ptr);
-    bitmap.display_and_exit();
+    // I don't suppose execute display_and_exit() on wsl2, it needs many steps to configure environment
+    // so I output the image to a ppm as what we have learned form raytracing lab
+    // bitmap.display_and_exit();
+    output_image(ptr);
 }
