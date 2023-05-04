@@ -38,6 +38,7 @@
 #include <iostream>
 
 #include "inc/MyAssert.h"
+#include <filesystem>
 
 
 static unsigned int numberOfComponents(int format)
@@ -508,6 +509,8 @@ bool Picture::load(std::string const& filename, const unsigned int flags)
   if (!success)
   {
     std::cerr << "ERROR Picture::load(): " << filename << " not loaded\n";
+    std::filesystem::path path = std::filesystem::current_path();
+    std::cout << "Current Working Directory: " << path << std::endl;
   }
 
   // Free all resources associated with the DevIL image
