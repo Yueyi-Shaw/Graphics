@@ -15,10 +15,16 @@ build:
 	$(buildfunc)
 
 cm=update
-git-push:
+push:
 	git add --all
 	git commit -m "$(cm)"
 	git push
+
+
+proj=
+run:
+	$(OUT_DIR)/$(proj).out
+
 
 .PHONY: clean
 clean:
