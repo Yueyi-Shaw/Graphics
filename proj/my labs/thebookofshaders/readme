@@ -4,3 +4,5 @@ https://github.com/patriciogonzalezvivo/thebookofshaders/tree/master
 Env:
 VScode
 plugin: glsl-canvas, shader languages surport for VSCode
+
+in Makefile I used glslViewer, you can configure it by https://github.com/patriciogonzalezvivo/glslViewer, I also add this repo to /Tools as submodule
