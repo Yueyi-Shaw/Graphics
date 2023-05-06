@@ -13,3 +13,6 @@
 [submodule "Tools/glslViewer"]
 	path = Tools/glslViewer
 	url = https://github.com/patriciogonzalezvivo/glslViewer.git
+[submodule "model/glTF-Sample-Models"]
+	path = model/glTF-Sample-Models
+	url = https://github.com/KhronosGroup/glTF-Sample-Models.git
