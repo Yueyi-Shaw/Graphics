@@ -3,6 +3,6 @@ src code about the book Cuda by Example.
 pdf can be found in ./book
 
 Env:
-WSL2 + VScode + Cuda toolkit
+WSL2 + VScode + Cuda toolkit + glut + glext
 
 *You can install Cuda in wsl2 according to a tutorial provided by Nvidia.
