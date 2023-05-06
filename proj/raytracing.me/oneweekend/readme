@@ -1,0 +1,10 @@
+src repo:
+https://github.com/RayTracing/raytracing.github.io
+
+env:
+WSL2 + Cuda Toolkit + VScode
+
+plugin:
+PPM viewer, WSL, C/C++
+
+proj maybe debugged in future so gdb or other tool is optional.

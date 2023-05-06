@@ -1,0 +1,6 @@
+reference repo:
+https://github.com/patriciogonzalezvivo/thebookofshaders/tree/master
+
+Env:
+VScode
+plugin: glsl-canvas, shader languages surport for VSCode
