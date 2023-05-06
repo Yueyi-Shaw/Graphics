@@ -4,14 +4,14 @@ OUT_DIR := ./out
 # HEADER_FILES := $(wildcard $(SOURCE_PATH)/*.h)
 
 #buildfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cu),nvcc $(var) -o ./out/$(notdir $(var:%.cu=%.out)) $(LIB);)
-build:
-	if [ -d $(OUT_DIR) ]; then \
-		echo "Check  $(OUT_DIR) exists" ;\
-	else \
-		echo " $(OUT_DIR) not exists, mkdir" ;\
-		mkdir $(OUT_DIR);\
-	fi
-	$(buildfunc)
+# build:
+# 	if [ -d $(OUT_DIR) ]; then \
+# 		echo "Check  $(OUT_DIR) exists" ;\
+# 	else \
+# 		echo " $(OUT_DIR) not exists, mkdir" ;\
+# 		mkdir $(OUT_DIR);\
+# 	fi
+# 	$(buildfunc)
 
 cm=update
 push:
