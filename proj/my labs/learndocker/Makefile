@@ -1,5 +1,8 @@
 run:
-	docker compose up -d
+	cd ./app && docker compose up -d
+
+stop:
+	cd ./app && docker compose down
 
 cm=update
 push:
