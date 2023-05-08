@@ -16,3 +16,6 @@
 [submodule "model/glTF-Sample-Models"]
 	path = model/glTF-Sample-Models
 	url = https://github.com/KhronosGroup/glTF-Sample-Models.git
+[submodule "proj/my labs/learndocker/ref/getting-started"]
+	path = proj/my labs/learndocker/ref/getting-started
+	url = https://github.com/docker/getting-started.git
