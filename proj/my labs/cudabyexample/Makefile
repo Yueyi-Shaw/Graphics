@@ -4,8 +4,8 @@ SOURCE_FILES := $(wildcard $(SOURCE_PATH)/*.cu)
 LIB := -lGL -lglut -lGLEW
 # HEADER_FILES := $(wildcard $(SOURCE_PATH)/*.h)
 
-buildfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cu),nvcc $(var) -o ./out/$(notdir $(var:%.cu=%.out)) $(LIB);)
-build:
+buildfunc := $(foreach var,$(wildcard $(SOURCE_PATH)/*.cu),nvcc $(var) -o $(OUT_DIR)/$(notdir $(var:%.cu=%.out)) $(LIB);)
+All:
 	if [ -d $(OUT_DIR) ]; then \
 		echo "Check  $(OUT_DIR) exists" ;\
 	else \
@@ -23,7 +23,10 @@ push:
 
 proj=
 run:
-	$(OUT_DIR)/$(proj).out
+	$(OUT_DIR)/$(proj).out > $(OUT_DIR)/$(proj).result
+
+build:
+	nvcc $(SOURCE_PATH)/$(proj).cu -o $(OUT_DIR)/$(notdir $(proj:%.cu=%.out)) $(LIB)
 
 
 .PHONY: clean
