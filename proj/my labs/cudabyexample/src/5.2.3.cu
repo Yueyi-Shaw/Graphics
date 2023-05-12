@@ -54,5 +54,4 @@ int main(void)
                             bitmap.image_size()));
     bitmap.anim_and_exit((void (*)(void *, int))generate_frame,
                          (void (*)(void *))cleanup);
-
 }

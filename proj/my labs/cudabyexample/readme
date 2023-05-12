@@ -5,5 +5,8 @@ pdf can be found in ./book
 Env:
 WSL2 + VScode + Cuda toolkit + glut + glext(gl libs are optional because I print my img to ppm files actually, it is a bit complicated to show a window or ui in wsl2)
 
+or:
+on windows: what you need is change cl.exe path in Makefile, and copy glut32/64.dll to outdir
+
 sudo apt install freeglut3-dev libglew-dev to fetch cv libs
 *You can install Cuda in wsl2 according to a tutorial provided by Nvidia. Also you may need to add cuda to path by editing .bashrc
