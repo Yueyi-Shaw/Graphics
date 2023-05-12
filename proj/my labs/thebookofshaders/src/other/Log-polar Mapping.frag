@@ -37,7 +37,7 @@ vec2 logPolar(vec2 p) {
 }
 
 float line(float pos, float aaSize) {
-	return smoothstep(-1.3*aaSize, -0.5*aaSize, pos) - 
+	return smoothstep(-1.3*aaSize, -0.5*aaSize, pos) -
 		smoothstep(0.5*aaSize, 1.3*aaSize, pos);
 }
 
