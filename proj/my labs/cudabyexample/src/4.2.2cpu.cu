@@ -1,5 +1,4 @@
 #include "../common/book.h"
-#include "../common/timer.h"
 #include "../common/cpu_bitmap.h"
 #include <iostream>
 
