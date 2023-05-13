@@ -13,7 +13,10 @@ ifeq ($(OS),Windows_NT)
 	endif
 	LIB = -Llib ./lib/glut64.lib
 # set your own cl.exe path here
-	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"
+# company pc
+#	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"
+# home pc
+	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\bin\Hostx64\x64"
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
@@ -61,6 +64,12 @@ endif
 	$(OUT_DIR)/$(proj).out > $(OUT_DIR)/$(proj).result
 
 build:
+	if [ -d $(OUT_DIR) ]; then \
+		echo "Check  $(OUT_DIR) exists" ;\
+	else \
+		echo " $(OUT_DIR) not exists, mkdir" ;\
+		mkdir $(OUT_DIR);\
+	fi
 	nvcc $(SOURCE_PATH)/$(proj).cu -o $(OUT_DIR)/$(notdir $(proj)).out $(LIB) $(CC)
 	rm $(OUT_DIR)/*.exp
 	rm $(OUT_DIR)/*.lib

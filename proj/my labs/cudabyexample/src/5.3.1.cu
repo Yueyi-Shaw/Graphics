@@ -16,7 +16,7 @@ __global__ void kernel(unsigned char *ptr)
     __shared__ float shared[16][16];
 
     // now calculate the value at that position
-    const float period = 128.0f;
+    const float period = 1024.0f;
 
     shared[threadIdx.x][threadIdx.y] =
         255 * (sinf(x * 2.0f * PI / period) + 1.0f) *
@@ -24,11 +24,11 @@ __global__ void kernel(unsigned char *ptr)
 
     // removing this syncthreads shows graphically what happens
     // when it doesn't exist.  this is an example of why we need it.
-    //__syncthreads();
+    __syncthreads();
 
     ptr[offset * 4 + 0] = 0;
     ptr[offset * 4 + 1] = shared[15 - threadIdx.x][15 - threadIdx.y];
-    ptr[offset * 4 + 2] = 0;
+    ptr[offset * 4 + 2] = shared[threadIdx.x][threadIdx.y];
     ptr[offset * 4 + 3] = 255;
 }
 
