@@ -10,3 +10,11 @@ on windows: what you need is change cl.exe path in Makefile, and copy glut32/64.
 
 sudo apt install freeglut3-dev libglew-dev to fetch cv libs
 *You can install Cuda in wsl2 according to a tutorial provided by Nvidia. Also you may need to add cuda to path by editing .bashrc
+
+
+Questions List:
+
+1.In chapter 7, I found it takes more time to generate next frame by using texture memory, my graphics card is GTX1660 SUPER. My result as follow:
+Global mem : 7.1ms
+Texture : 9.7ms
+Texture2D : 10.0ms
