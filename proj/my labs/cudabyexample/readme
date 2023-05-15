@@ -18,3 +18,9 @@ Questions List:
 Global mem : 7.1ms
 Texture : 9.7ms
 Texture2D : 10.0ms
+
+2."error: texture is not a template" for cuda 12.x
+Relative issues:
+https://stackoverflow.com/questions/74830272/build-opencv-with-cuda-12-undefined-identifiers-cudaunbindtexture-texturerefer
+
+https://forums.developer.nvidia.com/t/cuda-12-0-still-support-for-texture-reference-support-for-pascal-architecture-warp-synchronous-programming/237284

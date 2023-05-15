@@ -14,9 +14,9 @@ ifeq ($(OS),Windows_NT)
 	LIB = -Llib ./lib/glut64.lib
 # set your own cl.exe path here
 # company pc
-#	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"
+	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.34.31933\bin\Hostx64\x64"
 # home pc
-	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\bin\Hostx64\x64"
+#	CC =  -ccbin "C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.32.31326\bin\Hostx64\x64"
 else
 	UNAME_S := $(shell uname -s)
 	ifeq ($(UNAME_S),Linux)
