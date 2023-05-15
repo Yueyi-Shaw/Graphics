@@ -24,3 +24,15 @@ Relative issues:
 https://stackoverflow.com/questions/74830272/build-opencv-with-cuda-12-undefined-identifiers-cudaunbindtexture-texturerefer
 
 https://forums.developer.nvidia.com/t/cuda-12-0-still-support-for-texture-reference-support-for-pascal-architecture-warp-synchronous-programming/237284
+
+3.In chapter 8:
+$ ./out/8.2.1.out
+CUDA-capable device(s) is/are busy or unavailable in C:\Users\yix\Desktop\Graphics\proj\my labs\cudabyexample\src\8.2.1.cu at line 63
+just Comment out:
+    // cudaDeviceProp prop;
+    // int dev;
+    // memset(&prop, 0, sizeof(cudaDeviceProp));
+    // prop.major = 1;
+    // prop.minor = 0;
+    // HANDLE_ERROR(cudaChooseDevice(&dev, &prop));
+    // HANDLE_ERROR(cudaGLSetGLDevice(dev));
