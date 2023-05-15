@@ -28,7 +28,7 @@ https://forums.developer.nvidia.com/t/cuda-12-0-still-support-for-texture-refere
 3.In chapter 8:
 $ ./out/8.2.1.out
 CUDA-capable device(s) is/are busy or unavailable in C:\Users\yix\Desktop\Graphics\proj\my labs\cudabyexample\src\8.2.1.cu at line 63
-just Comment out:
+you can solve this by just Commenting out:
     // cudaDeviceProp prop;
     // int dev;
     // memset(&prop, 0, sizeof(cudaDeviceProp));
@@ -36,3 +36,5 @@ just Comment out:
     // prop.minor = 0;
     // HANDLE_ERROR(cudaChooseDevice(&dev, &prop));
     // HANDLE_ERROR(cudaGLSetGLDevice(dev));
+or just using cudaGLSetGLDevice(dev) instead of HANDLE_ERROR(cudaGLSetGLDevice(dev))
+I think this problem was caused by new version of cuda returns a code which is regarded a err by HANDLE_ERROR.

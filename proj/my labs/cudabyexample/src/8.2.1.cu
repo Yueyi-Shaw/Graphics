@@ -54,13 +54,13 @@ __global__ void kernel(uchar4 *ptr)
 
 int main(int argc, char **argv)
 {
-    // cudaDeviceProp prop;
-    // int dev;
-    // memset(&prop, 0, sizeof(cudaDeviceProp));
-    // prop.major = 1;
-    // prop.minor = 0;
-    // HANDLE_ERROR(cudaChooseDevice(&dev, &prop));
-    // HANDLE_ERROR(cudaGLSetGLDevice(dev));
+    cudaDeviceProp prop;
+    int dev;
+    memset(&prop, 0, sizeof(cudaDeviceProp));
+    prop.major = 1;
+    prop.minor = 0;
+    HANDLE_ERROR(cudaChooseDevice(&dev, &prop));
+    cudaGLSetGLDevice(dev);
     // these GLUT calls need to be made before the other GL calls
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA);
