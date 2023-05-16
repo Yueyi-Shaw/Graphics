@@ -38,3 +38,6 @@ you can solve this by just Commenting out:
     // HANDLE_ERROR(cudaGLSetGLDevice(dev));
 or just using cudaGLSetGLDevice(dev) instead of HANDLE_ERROR(cudaGLSetGLDevice(dev))
 I think this problem was caused by new version of cuda returns a code which is regarded a err by HANDLE_ERROR.
+
+4.In chapter 10:
+I think in today(2023)'s cuda has optimized its internal stream executing schedule since it seems like 10.5.1 and 10.7.1 got extremely similar result.
