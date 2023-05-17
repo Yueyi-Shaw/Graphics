@@ -2,13 +2,13 @@
 	path = Tools/glslEditor
 	url = https://github.com/patriciogonzalezvivo/glslEditor.git
 [submodule "proj/refer repos/raytracing.github.io"]
-	path = proj/refer repos/raytracing.github.io
+	path = refer repos/raytracing.github.io
 	url = https://github.com/RayTracing/raytracing.github.io.git
 [submodule "proj/refer repos/thebookofshaders"]
-	path = proj/refer repos/thebookofshaders
+	path = refer repos/thebookofshaders
 	url = https://github.com/patriciogonzalezvivo/thebookofshaders.git
 [submodule "proj/refer repos/OptiX_Apps"]
-	path = proj/refer repos/OptiX_Apps
+	path = refer repos/OptiX_Apps
 	url = https://github.com/NVIDIA/OptiX_Apps.git
 [submodule "Tools/glslViewer"]
 	path = Tools/glslViewer
@@ -16,3 +16,6 @@
 [submodule "model/glTF-Sample-Models"]
 	path = model/glTF-Sample-Models
 	url = https://github.com/KhronosGroup/glTF-Sample-Models.git
+[submodule "refer repos/examples"]
+	path = refer repos/examples
+	url = https://github.com/openglredbook/examples
