@@ -6,5 +6,8 @@ $mkdir build
 $cd build
 $cmake -G <your compiler> ..
 
-Q:how about opengl lib?
+Q:How about opengl lib?
 A:My display card is RTX3060 and my driver verison is 531.79, which support opengl 4.6, you can check this info by using GPU-Z in the /Tools path.
+
+Q:Why the directory structure got a big difference with the official example?
+A:I don't understand why the OpenGL Red Book's example project provided on GitHub was designed in that way, so I made some adjustments. However, some weird questions still exist, such as why not simply make the whole Vermilion project into a library.

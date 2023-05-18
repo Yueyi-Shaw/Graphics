@@ -9,13 +9,13 @@ set (CMAKE_DEBUG_POSTFIX "_d")
 #----------------------------------------------------SET OUTPUT PATH------------------------------------------------------------
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 # for multi-config builds (e.g. msvc)
 foreach( OUTPUTCONFIG ${CMAKE_CONFIGURATION_TYPES} )
     string( TOUPPER ${OUTPUTCONFIG} OUTPUTCONFIG )
-    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_SOURCE_DIR}/bin )
-    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_SOURCE_DIR}/lib )
-    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_SOURCE_DIR}/lib )
+    set( CMAKE_RUNTIME_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/bin )
+    set( CMAKE_LIBRARY_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib )
+    set( CMAKE_ARCHIVE_OUTPUT_DIRECTORY_${OUTPUTCONFIG} ${CMAKE_BINARY_DIR}/lib )
 endforeach( OUTPUTCONFIG CMAKE_CONFIGURATION_TYPES )
 
 #----------------------------------------------------THIRD PARTY LIBS-----------------------------------------------------------
@@ -26,24 +26,28 @@ find_package(OpenGL REQUIRED)
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
-add_subdirectory(lib/glfw)
+add_subdirectory(external/glfw)
+
+#----------------------------------------------------BUILD OWN LIBS-----------------------------------------------------------
+# vermilion
+add_library(vermilion
+            vermilion/lib/gl3w.c
+            vermilion/lib/LoadShaders.cpp
+            vermilion/lib/targa.cpp
+            vermilion/lib/vdds.cpp
+            vermilion/lib/loadtexture.cpp
+            vermilion/lib/vermilion.cpp
+            vermilion/lib/vbm.cpp
+)
 
 #----------------------------------------------------INCLUDE FILES PATH----------------------------------------------------------
 #include
 include_directories(${CMAKE_SOURCE_DIR}/include)
-include_directories(lib/glfw/include)
+include_directories(external/glfw/include)
 
 #----------------------------------------------------LINKING LIBS PATH-----------------------------------------------------------
-link_directories(${CMAKE_SOURCE_DIR}/lib)
-add_library(vermilion
-            lib/gl3w.c
-            lib/LoadShaders.cpp
-            lib/targa.cpp
-            lib/vdds.cpp
-            lib/loadtexture.cpp
-            lib/vermilion.cpp
-            lib/vbm.cpp
-)
+link_directories(${CMAKE_BINARY_DIR}/lib)
+
 #----------------------------------------------------COMPILE EXECUTABLE----------------------------------------------------------
 # header
 set(COMMON_HEADERS include/vgl.h include/vapp.h)
@@ -54,7 +58,7 @@ set_property(TARGET OPG_LABS PROPERTY DEBUG_POSTFIX _d)
 set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 
 #----------------------------------------------------LINK EXECUTABLE AND LIBS----------------------------------------------------
-set(LIBS vermilion OpenGL::GL ${OPENGL_LIBRARIES} optimized glfw3 debug glfw3_d)
+set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 debug glfw3_d)
 target_link_libraries(OPG_LABS ${LIBS})
 
 # Add dependency on glfw for OPG_LABS
@@ -62,3 +66,9 @@ add_dependencies(OPG_LABS glfw)
 
 ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
+
+#----------------------------------------------------COPY ASSET TO BUILD DIR-----------------------------------------------------
+message("Copying resources directory to build directory")
+set(SOURCE_DIR ${CMAKE_SOURCE_DIR}/media)
+set(TARGET_DIR ${CMAKE_BINARY_DIR}/bin)
+file(COPY ${SOURCE_DIR} DESTINATION ${TARGET_DIR})
