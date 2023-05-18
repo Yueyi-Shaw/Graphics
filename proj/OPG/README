@@ -1,0 +1,10 @@
+Write this lab according to OpenGL Programming Guide, you can find the book in OPG/book. I also add the offcial source code as a submodule to this repo.
+
+Q:How to build it?
+A:In the root path, run :
+$mkdir build
+$cd build
+$cmake -G <your compiler> ..
+
+Q:how about opengl lib?
+A:My display card is RTX3060 and my driver verison is 531.79, which support opengl 4.6, you can check this info by using GPU-Z in the /Tools path.

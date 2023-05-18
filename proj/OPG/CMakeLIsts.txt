@@ -2,12 +2,24 @@ cmake_minimum_required(VERSION 3.13)
 
 project(OPG_LABS VERSION 1.0)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
+
+# glfw
 set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(thirdparty/glfw)
 
-# set( LABS ${CMAKE_SOURCE_DIR}/src )
+#opengl
+find_package(OpenGL REQUIRED)
 
-add_executable(myprogram src/main.cpp)
-target_link_libraries(myprogram glfw)
+#include
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/include)
+link_directories(${CMAKE_CURRENT_SOURCE_DIR}/lib)
+
+#executable
+add_executable(OPG_LABS src/main.cpp)
+
+#link third party
+set(LIBS glfw OpenGL::GL)
+target_link_libraries(OPG_LABS ${LIBS})
