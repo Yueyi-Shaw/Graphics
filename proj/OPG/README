@@ -16,3 +16,5 @@ A:I don't understand why the OpenGL Red Book's example project provided on GitHu
 Q3:"LNK2019	unresolved external symbol WinMain referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)"
 A:Check you application's "subsystem" is "CONSOLE" if you are using entry func "main()", there are different crt entry func for concole and windows application. You can get more infomation in Windows via C/Cpp.
 
+Q4:compile failed on linux or mingw32.
+A: https://github.com/openglredbook/examples/commit/1a3e0fa25aaff29befc79bc16634abe9e8034a40#diff-f9b9c4ac5561892dd6de1c285d20ad4063b0a2474fda52bbd27244355240cf4e

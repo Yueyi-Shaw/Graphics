@@ -1,24 +1,27 @@
 #include "vapp.h"
 
 #include <time.h>
+#ifndef _WIN32
+#include <sys/time.h>
+#endif
 
-void VermilionApplication::window_size_callback(GLFWwindow* window, int width, int height)
+void VermilionApplication::window_size_callback(GLFWwindow *window, int width, int height)
 {
-    VermilionApplication* pThis = (VermilionApplication*)glfwGetWindowUserPointer(window);
+    VermilionApplication *pThis = (VermilionApplication *)glfwGetWindowUserPointer(window);
 
     pThis->Resize(width, height);
 }
 
-void VermilionApplication::key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void VermilionApplication::key_callback(GLFWwindow *window, int key, int scancode, int action, int mods)
 {
-    VermilionApplication* pThis = (VermilionApplication*)glfwGetWindowUserPointer(window);
+    VermilionApplication *pThis = (VermilionApplication *)glfwGetWindowUserPointer(window);
 
     pThis->OnKey(key, scancode, action, mods);
 }
 
-void VermilionApplication::char_callback(GLFWwindow* window, unsigned int codepoint)
+void VermilionApplication::char_callback(GLFWwindow *window, unsigned int codepoint)
 {
-    VermilionApplication* pThis = (VermilionApplication*)glfwGetWindowUserPointer(window);
+    VermilionApplication *pThis = (VermilionApplication *)glfwGetWindowUserPointer(window);
 
     pThis->OnChar(codepoint);
 }
@@ -34,7 +37,7 @@ unsigned int VermilionApplication::app_time()
 #endif
 }
 
-void VermilionApplication::Initialize(const char * title)
+void VermilionApplication::Initialize(const char *title)
 {
 #ifdef _WIN32
     m_appStartTime = ::GetTickCount64();
