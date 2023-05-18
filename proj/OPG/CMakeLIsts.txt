@@ -48,21 +48,30 @@ include_directories(external/glfw/include)
 #----------------------------------------------------LINKING LIBS PATH-----------------------------------------------------------
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
+#----------------------------------------------------LINK EXECUTABLE AND LIBS----------------------------------------------------
+set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 debug glfw3_d)
+
 #----------------------------------------------------COMPILE EXECUTABLE----------------------------------------------------------
 # header
 set(COMMON_HEADERS include/vgl.h include/vapp.h)
-# src
-add_executable(OPG_LABS src/main.cpp ${COMMON_HEADERS})
-set_property(TARGET OPG_LABS PROPERTY DEBUG_POSTFIX _d)
+
 # run dir
 set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 
-#----------------------------------------------------LINK EXECUTABLE AND LIBS----------------------------------------------------
-set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 debug glfw3_d)
-target_link_libraries(OPG_LABS ${LIBS})
+# lab list
+set(OPG_LABS
+  1-1-keypress
+  1-1-triangles
+)
 
-# Add dependency on glfw for OPG_LABS
-add_dependencies(OPG_LABS glfw)
+# add src to executable
+foreach(LAB ${OPG_LABS})
+    add_executable(${LAB} WIN32 src/${LAB}/${LAB}.cpp ${COMMON_HEADERS})
+    set_property(TARGET ${LAB} PROPERTY DEBUG_POSTFIX _d)
+    target_link_libraries(${LAB} ${LIBS})
+    # Add dependency on glfw for OPG_LABS
+    add_dependencies(${LAB} glfw)
+endforeach(LAB)
 
 ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
