@@ -92,4 +92,13 @@ Thread 1 hit Breakpoint 1, main (argc=1, argv=0x1a673ee5f60) at C:\Users\yix\Des
 (gdb)
 ```
 
-试着在vscode里配置一下gdb在vscode中debug...
+不想古法调试的话可以配置一下vscode的tasks.json和launch.json，我将mingw的完整实现放在了.vscode中并且上传了，使用时记得修改当前需要调试的exe路径以及gdb所在的路径。
+
+效果图：
+![Alt Text](./png/debugbycode.png)
+
+<u>**请务必注意当前还有个小问题，gdb在调试时，假如进程被glfw独占的话，gdb的设置断点极有可能失效或者被block住，如下：**</u>
+
+![Alt Text](./png/setBreakpointFailed.png)
+
+可以发现当我丢失了对程序的捕获之后，设置的断点都处于block状态（空心白色断点）
