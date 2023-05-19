@@ -1,5 +1,5 @@
 # chapter 0(env prepare):
-关于环境，有很多选项，光是编译器就可以使用MinGW、MSVC、GNU等gcc编译器来编译，调试的话同理根据选择的编译器有不同的调试方式，MSVC就是vs ide来debug，我目前用的是mingw所以我打算使用gdb来进行debug，编译时注意一下流程：
+关于环境，有很多选项，光是编译器就可以使用MinGW、MSVC、GNU等gcc编译器来编译(gnu和mingw编译不通过去看RAEDME的Q&A)，调试的话同理根据选择的编译器有不同的调试方式，MSVC就是vs ide来debug，我目前用的是mingw所以我打算使用gdb来进行debug，编译时注意一下流程：
 ```sh
 yix@GWSHAPCCP35 MINGW64 ~/Desktop/Graphics/proj/OPG/build/mingw64 (main)
 $ make debug
