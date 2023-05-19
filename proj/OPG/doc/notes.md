@@ -102,3 +102,6 @@ Thread 1 hit Breakpoint 1, main (argc=1, argv=0x1a673ee5f60) at C:\Users\yix\Des
 ![Alt Text](./png/setBreakpointFailed.png)
 
 可以发现当我丢失了对程序的捕获之后，设置的断点都处于block状态（空心白色断点）
+你可以参考这个issue来解决这个问题
+
+[Can't bind breakpoint while program is running on Windows](https://github.com/Microsoft/vscode-cpptools/issues/595#issuecomment-289786451)
