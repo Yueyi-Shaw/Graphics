@@ -4,16 +4,10 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include <iostream>
 #include "vgl.h"
 #include "LoadShaders.h"
-using namespace std;
 
-#ifdef __linux__
-#include <unistd.h>
-#elif _WIN32
-#include <windows.h>
-#endif
+using namespace std;
 
 enum VAO_IDs
 {

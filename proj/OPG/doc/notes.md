@@ -105,3 +105,36 @@ Thread 1 hit Breakpoint 1, main (argc=1, argv=0x1a673ee5f60) at C:\Users\yix\Des
 你可以参考这个issue来解决这个问题
 
 [Can't bind breakpoint while program is running on Windows](https://github.com/Microsoft/vscode-cpptools/issues/595#issuecomment-289786451)
+
+或者更加直接一点，调用系统层api创建一个新的console
+
+``` cpp
+// allocate a new console
+AllocConsole();
+HWND consoleHandle = GetConsoleWindow();
+ShowWindow(consoleHandle, SW_SHOW);
+```
+在这个console中按下<kbd>Ctrl</kbd>+<kbd>c</kbd>来暂停进程，这样就可以设置断点。顺带提一句在loop中添加
+``` cpp
+loop
+{
+    ...
+    Sleep(5);
+    ...
+}
+```
+并不能使进程暂停，而是处于一个等待的状态，直到5ms后一个信号量通知主线程可以开始执行调度（如果想深入了解可以参考CLR via C#对线程调度一章的讨论）。
+
+那么处理完这些还有最后一个问题，在vscode中配置cpp智能感知。
+理论上设置好c_cpp_properties.json就行了(可以参考.vscode目录下的现有配置，根据本地环境更改编译器路径)。
+顺带一提直接粘贴书中代码很有可能会重复引用相同头文件，比如第一节就重复引用了
+```cpp
+#include <iostream>
+```
+这会导致vscode的intellisense出错，像如下这样：
+![Alt Text](./png/duplicateInclude.png)
+
+至此，需要配置的东西大体都配置好了，可以进入到正式的代码学习中了。
+
+
+# chapter 1:
