@@ -35,7 +35,7 @@ const GLuint NumVertices = 6;
 
 void init(void)
 {
-    std::cout << "init" << std::endl;
+    std::cout << "init start" << std::endl;
     static const GLfloat vertices[NumVertices][2] =
         {
             {-0.90, -0.90}, // Triangle 1
@@ -44,6 +44,8 @@ void init(void)
             {0.90, -0.85}, // Triangle 2
             {0.90, 0.90},
             {-0.85, 0.90}};
+
+    glCreateVertexArrays(NumVAOs, VAOs);
 
     glCreateBuffers(NumBuffers, Buffers);
     glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices),
@@ -57,12 +59,12 @@ void init(void)
     GLuint program = LoadShaders(shaders);
     glUseProgram(program);
 
-    glGenVertexArrays(NumVAOs, VAOs);
     glBindVertexArray(VAOs[Triangles]);
     glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
     glVertexAttribPointer(vPosition, 2, GL_FLOAT,
                           GL_FALSE, 0, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(vPosition);
+    std::cout << "init end" << std::endl;
 }
 
 //--------------------------------------------------------------------
