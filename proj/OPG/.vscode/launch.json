@@ -8,7 +8,7 @@
             "program": "${workspaceFolder}\\build\\mingw64\\bin\\1-1-triangles_d.exe",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}\\build\\mingw64\\bin",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",

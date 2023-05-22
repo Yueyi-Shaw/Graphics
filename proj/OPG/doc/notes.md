@@ -131,10 +131,15 @@ loop
 ```cpp
 #include <iostream>
 ```
-这会导致vscode的intellisense出错，像如下这样：
+~~这会导致vscode的intellisense出错，像如下这样：~~
+
+其实是vscode智能感知的问题，参考ps里的issue来解决这个问题.
 ![Alt Text](./png/duplicateInclude.png)
 
 至此，需要配置的东西大体都配置好了，可以进入到正式的代码学习中了。
 
+ps:我在配置时其实还遇到了是不是给我报"namespace "std" has no member "cout""
+
+可以参考这个[issue](https://stackoverflow.com/questions/44094817/why-is-visual-studio-code-telling-me-that-cout-is-not-a-member-of-std-namespace)
 
 # chapter 1:

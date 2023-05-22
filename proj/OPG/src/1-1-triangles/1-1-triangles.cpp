@@ -6,8 +6,7 @@
 
 #include "vgl.h"
 #include "LoadShaders.h"
-
-using namespace std;
+#include "Tools/DebugConsole.h"
 
 enum VAO_IDs
 {
@@ -36,6 +35,7 @@ const GLuint NumVertices = 6;
 
 void init(void)
 {
+    std::cout << "init" << std::endl;
     static const GLfloat vertices[NumVertices][2] =
         {
             {-0.90, -0.90}, // Triangle 1
@@ -50,8 +50,8 @@ void init(void)
                          vertices, 0);
 
     ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "triangles.vert"},
-        {GL_FRAGMENT_SHADER, "triangles.frag"},
+        {GL_VERTEX_SHADER, "./media/shaders/triangles/triangles.vert"},
+        {GL_FRAGMENT_SHADER, "./media/shaders/triangles/triangles.frag"},
         {GL_NONE, NULL}};
 
     GLuint program = LoadShaders(shaders);
@@ -86,11 +86,7 @@ void display(void)
 
 int main(int argc, char **argv)
 {
-    // allocate a new console
-    AllocConsole();
-    HWND consoleHandle = GetConsoleWindow();
-    ShowWindow(consoleHandle, SW_SHOW);
-
+    DebugConsole console;
     glfwInit();
 
     GLFWwindow *window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
