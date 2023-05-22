@@ -1,7 +1,7 @@
 {
     "configurations": [
         {
-            "name": "mingw gdb debug",
+            "name": "1-1-triangle",
             "type": "cppdbg",
             "request": "launch",
             //change the path to the exe you want to debug.

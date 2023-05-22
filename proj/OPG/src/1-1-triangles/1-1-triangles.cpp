@@ -5,10 +5,15 @@
 //////////////////////////////////////////////////////////////////////
 
 #include <iostream>
-using namespace std;
-
 #include "vgl.h"
 #include "LoadShaders.h"
+using namespace std;
+
+#ifdef __linux__
+#include <unistd.h>
+#elif _WIN32
+#include <windows.h>
+#endif
 
 enum VAO_IDs
 {
@@ -87,6 +92,11 @@ void display(void)
 
 int main(int argc, char **argv)
 {
+    // allocate a new console
+    AllocConsole();
+    HWND consoleHandle = GetConsoleWindow();
+    ShowWindow(consoleHandle, SW_SHOW);
+
     glfwInit();
 
     GLFWwindow *window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);

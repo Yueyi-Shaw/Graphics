@@ -51,10 +51,10 @@
         {
             "label": "BuildDebug",
             "dependsOn": [
-              "make debug",
-              "make"
+                "make debug",
+                "make"
             ]
-          }
+        }
     ],
     "version": "2.0.0"
 }
