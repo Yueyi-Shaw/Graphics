@@ -143,3 +143,23 @@ ps:我在配置时其实还遇到了是不是给我报"namespace "std" has no me
 可以参考这个[issue](https://stackoverflow.com/questions/44094817/why-is-visual-studio-code-telling-me-that-cout-is-not-a-member-of-std-namespace)
 
 # chapter 1:
+
+简要根据示例代码介绍了opengl的内部渲染管线流程，每个过程将会在后续章节细讲，本章主要就介绍了使用opengl绘制的常用过程，包括创建VAO、VBO以及绑定数据、将数据推送到渲染管线、自定义shader控制绘制过程等，大体很基础。
+
+triangle程序理论画面：
+![Alt Text](./png/triangles.png)
+
+事实上还有一个名为keypress的程序，但是在第一章并没有提到，这个程序运行时按下<kbd>M</kbd>切换线框模式，画面和triangle别无二致所以不赘述
+
+# chapter 2:
+这一章官方并没有提供单独的示例，可以用第一章的代码修改一下VBO的数据然后拿来用来写shader的效果
+
+btw，我尽可能在代码中都使用了相对路径，但是由于有些lab我把shader的实现和源码放在一起了(比如这章)，所以当你的build工程和我的路径不一样时，相对路径的引用需要手动check一下，不过我基本都有在console里log，可以根据这个信息修改
+
+## vertex shader
+
+我将chapter1的代码修改了一下，并将vertex shader以及fragment shader改用了2-1-shader目录下的两个自定义shader，这样就相当于获得了一个本地的轻量版glsl-viewer
+
+什么是glsl-viewer请参考这个
+
+[glslViewer](https://github.com/patriciogonzalezvivo/glslViewer)

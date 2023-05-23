@@ -62,6 +62,7 @@ set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(OPG_LABS
   1-1-keypress
   1-1-triangles
+  2-1-shader
 )
 
 # add src to executable
@@ -72,6 +73,10 @@ foreach(LAB ${OPG_LABS})
     # Add dependency on glfw for OPG_LABS
     add_dependencies(${LAB} glfw)
 endforeach(LAB)
+
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_compile_definitions(_DEBUG)
+endif()
 
 ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})
