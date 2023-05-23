@@ -23,8 +23,8 @@ DebugConsole::DebugConsole(/* args */)
     // test log
     freopen("CONOUT$", "w", stdout);
     freopen("CONOUT$", "w", stderr);
-    std::cout << "Hello, World!" << std::endl;
-    std::cerr << "Error message" << std::endl;
+    std::cout << "Debug Message Stream: On" << std::endl;
+    std::cerr << "Error Message Stream: On" << std::endl;
 }
 
 DebugConsole::~DebugConsole()
