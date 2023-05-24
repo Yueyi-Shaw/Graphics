@@ -57,7 +57,7 @@ void init(void)
 
     ShaderInfo shaders[] = {
         {GL_VERTEX_SHADER, "../../../src\\2-1-shader\\shader.vert"},
-        {GL_FRAGMENT_SHADER, "../../../src\\2-1-shader\\CreationbySilexars.frag"},
+        {GL_FRAGMENT_SHADER, "../../../src\\2-1-shader\\shader.frag"},
         {GL_NONE, NULL}};
 
     GLuint program = LoadShaders(shaders);

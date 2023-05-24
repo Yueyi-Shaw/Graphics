@@ -1,4 +1,7 @@
 {
+    "exePath": "${workspaceFolder}\\build\\mingw64\\bin\\",
+    //"gdbPath": "D:\\mingw64\\bin\\gdb.exe",
+    "gdbPath": "E:\\mingw\\mingw64\\bin\\gdb.exe",
     "files.associations": {
         "iostream": "cpp",
         "ostream": "cpp",

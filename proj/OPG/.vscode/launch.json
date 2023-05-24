@@ -5,14 +5,14 @@
             "type": "cppdbg",
             "request": "launch",
             //change the path to the exe you want to debug.
-            "program": "${workspaceFolder}\\build\\mingw64\\bin\\1-1-keypress_d.exe",
+            "program": "${config:exePath}1-1-keypress_d.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\build\\mingw64\\bin",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",
+            "miDebuggerPath": "${config:gdbPath}",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -32,14 +32,14 @@
             "type": "cppdbg",
             "request": "launch",
             //change the path to the exe you want to debug.
-            "program": "${workspaceFolder}\\build\\mingw64\\bin\\1-1-triangles_d.exe",
+            "program": "${config:exePath}1-1-triangles_d.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\build\\mingw64\\bin",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",
+            "miDebuggerPath": "${config:gdbPath}",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
@@ -59,14 +59,14 @@
             "type": "cppdbg",
             "request": "launch",
             //change the path to the exe you want to debug.
-            "program": "${workspaceFolder}\\build\\mingw64\\bin\\2-1-shader_d.exe",
+            "program": "${config:exePath}2-1-shader_d.exe",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}\\build\\mingw64\\bin",
             "environment": [],
             "externalConsole": true,
             "MIMode": "gdb",
-            "miDebuggerPath": "D:\\mingw64\\bin\\gdb.exe",
+            "miDebuggerPath": "${config:gdbPath}",
             "setupCommands": [
                 {
                     "description": "Enable pretty-printing for gdb",
