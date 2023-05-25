@@ -64,6 +64,7 @@ set(OPG_LABS
   1-1-triangles
   2-1-shader
   2-2-advanced
+  3-1-primitives
 )
 
 # add src to executable
