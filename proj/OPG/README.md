@@ -163,3 +163,12 @@ btw，我尽可能在代码中都使用了相对路径，但是由于有些lab�
 什么是glsl-viewer请参考这个
 
 [glslViewer](https://github.com/patriciogonzalezvivo/glslViewer)
+
+2-1理论输出：
+![Alt Text](./png/2-1.png)
+颜色随时间变化
+
+2-2中针对不同图元我们想启用不同的shader，如果用传统的方式的话，就是编译各种shader objects，针对我们想要的组合进行多种link，最后在绘制时通过glUseProgram切换上下文的shader program，事实上在第二章中介绍到有一种简化的接口ProgramPipeline可以快速做到同意效果
+2-2理论输出：
+![Alt Text](./png/2-2.png)
+颜色随时间变化
