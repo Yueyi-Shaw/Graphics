@@ -5,6 +5,9 @@
 #include "LoadShaders.h"
 #include "Tools/DebugConsole.h"
 
+const int WindowWidth = 800;
+const int WindowHeight = 600;
+
 class ApplicationTemplate
 {
 protected:
@@ -75,7 +78,7 @@ public:
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 #endif
 
-        m_pWindow = glfwCreateWindow(800, 600, title ? title : "OpenGL Application", nullptr, nullptr);
+        m_pWindow = glfwCreateWindow(WindowWidth, WindowHeight, title ? title : "OpenGL Application", nullptr, nullptr);
         glfwSetWindowUserPointer(m_pWindow, this);
         glfwSetWindowSizeCallback(m_pWindow, window_size_callback);
         glfwSetKeyCallback(m_pWindow, key_callback);
@@ -85,7 +88,7 @@ public:
 
         gl3wInit();
 
-        Resize(800, 600);
+        Resize(WindowWidth, WindowHeight);
 
 #ifdef _DEBUG
         if (glDebugMessageCallbackARB != NULL)

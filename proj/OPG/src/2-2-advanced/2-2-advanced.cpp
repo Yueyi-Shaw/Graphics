@@ -173,7 +173,7 @@ void display_traditional(void)
     if (u_resolutionLoc1 != -1)
     {
         float resolution[2] = {WindowWidth, WindowHeight};
-        glUniform2fv(u_resolutionLoc1, 2, resolution);
+        glUniform2fv(u_resolutionLoc1, 1, resolution);
     }
     glBindVertexArray(VAOs[Triangles]);
     glDrawArrays(GL_TRIANGLES, 0, NumVertices / 2);
@@ -186,7 +186,7 @@ void display_traditional(void)
     if (u_resolutionLoc2 != -1)
     {
         float resolution[2] = {WindowWidth, WindowHeight};
-        glUniform2fv(u_resolutionLoc2, 2, resolution);
+        glUniform2fv(u_resolutionLoc2, 1, resolution);
     }
     glBindVertexArray(VAOs[Triangles]);
     glDrawArrays(GL_TRIANGLES, 3, NumVertices / 2);
@@ -210,7 +210,7 @@ void display_new(void)
     if (p1_resolution_loc != -1)
     {
         float resolution[2] = {WindowWidth, WindowHeight};
-        glProgramUniform2fv(programs[1],p1_resolution_loc, 2, resolution);
+        glProgramUniform2fv(programs[1],p1_resolution_loc, 1, resolution);
     }
     glBindVertexArray(VAOs[Triangles]);
     glDrawArrays(GL_TRIANGLES, 0, NumVertices / 2);
@@ -223,7 +223,7 @@ void display_new(void)
     if (p2_resolution_loc != -1)
     {
         float resolution[2] = {WindowWidth, WindowHeight};
-        glProgramUniform2fv(programs[2],p2_resolution_loc, 2, resolution);
+        glProgramUniform2fv(programs[2],p2_resolution_loc, 1, resolution);
     }
     // glUseProgram(program2); // this line will replace pipeline binding
     glBindVertexArray(VAOs[Triangles]);

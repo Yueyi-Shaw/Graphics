@@ -90,7 +90,7 @@ void display(void)
     if (u_resolutionLoc != -1)
     {
         float resolution[2] = {WindowWidth, WindowHeight};
-        glUniform2fv(u_resolutionLoc, 2, resolution);
+        glUniform2fv(u_resolutionLoc, 1, resolution);
     }
 
     glBindVertexArray(VAOs[Triangles]);
