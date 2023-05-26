@@ -69,7 +69,7 @@ public:
 
         glEnable(GL_POINT_SPRITE);
         glEnable(GL_PROGRAM_POINT_SIZE);
-        glPointSize(128.0f);
+        glPointSize(64.0f);
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_POINTS, 0, 4);
 

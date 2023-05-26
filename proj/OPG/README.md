@@ -174,3 +174,12 @@ btw，我尽可能在代码中都使用了相对路径，但是由于有些lab�
 颜色随时间变化
 
 # chapter 3:
+关于gl_PointCoord在fs中的使用，需要在app中定义：
+```cpp
+glEnable(GL_POINT_SPRITE);
+```
+关于找不到GL_POINT_SPRITE可以参考这个[issue](https://www.reddit.com/r/opengl/comments/480u1r/help_gl_pointcoordxy_always_zero_in_fragment/)
+
+## point
+
+## line
