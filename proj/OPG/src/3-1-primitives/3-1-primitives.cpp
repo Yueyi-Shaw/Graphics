@@ -67,8 +67,9 @@ public:
             glUniform2f(u_resolutionLoc1, (GLfloat)resolution[0], (GLfloat)resolution[1]);
         }
 
+        glEnable(GL_POINT_SPRITE);
         glEnable(GL_PROGRAM_POINT_SIZE);
-        glPointSize(32.0f);
+        glPointSize(128.0f);
         glBindVertexArray(VAOs[0]);
         glDrawArrays(GL_POINTS, 0, 4);
 

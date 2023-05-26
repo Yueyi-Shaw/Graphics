@@ -570,6 +570,7 @@ typedef void GLvoid;
 #define GL_FRAGMENT_SHADER_DERIVATIVE_HINT 0x8B8B
 #define GL_SHADING_LANGUAGE_VERSION       0x8B8C
 #define GL_CURRENT_PROGRAM                0x8B8D
+#define GL_POINT_SPRITE                   0x8861
 #define GL_POINT_SPRITE_COORD_ORIGIN      0x8CA0
 #define GL_LOWER_LEFT                     0x8CA1
 #define GL_UPPER_LEFT                     0x8CA2
