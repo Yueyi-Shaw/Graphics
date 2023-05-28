@@ -124,6 +124,8 @@ public:
         glPolygonMode(GL_BACK, GL_FILL);
 
         glFrontFace(GL_CW);
+        glEnable(GL_CULL_FACE);
+        glCullFace(GL_BACK);
         // draw points
         // glEnable(GL_POINT_SPRITE); // use gl_PointCoord to see effects
         // glEnable(GL_PROGRAM_POINT_SIZE);
