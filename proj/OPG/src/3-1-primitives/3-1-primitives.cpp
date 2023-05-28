@@ -21,7 +21,7 @@ public:
     {
         ApplicationTemplate::Initialize(title);
         std::cout << "init start" << std::endl;
-        static const GLfloat vertices[40][2] =
+        static const GLfloat vertices[52][2] =
             {
                 // Points
                 {-0.8, -0.8},
@@ -66,7 +66,20 @@ public:
                 {0.4, 0.6},
                 {0.45, 0.8},
                 {0.5, 0.6},
-                {0.55, 0.8}};
+                {0.55, 0.8},
+                // triangle fan
+                {0., -0.6},
+                {0.05, -0.8},
+                {0.1, -0.6},
+                {0.15, -0.8},
+                {0.2, -0.6},
+                {0.25, -0.8},
+                {0.3, -0.6},
+                {0.35, -0.8},
+                {0.4, -0.6},
+                {0.45, -0.8},
+                {0.5, -0.6},
+                {0.55, -0.8}};
 
         glCreateVertexArrays(1, VAOs);
         glCreateBuffers(1, VBOs);
@@ -128,6 +141,7 @@ public:
         glDrawArrays(GL_TRIANGLES, 4, 12);
         glDrawArrays(GL_TRIANGLE_STRIP, 16, 12);
         glDrawArrays(GL_TRIANGLE_FAN, 28, 12);
+        glDrawArrays(GL_TRIANGLE_FAN, 40, 12);
         ApplicationTemplate::Display();
     }
 
