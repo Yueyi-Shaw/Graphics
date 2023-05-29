@@ -95,6 +95,7 @@ Thread 1 hit Breakpoint 1, main (argc=1, argv=0x1a673ee5f60) at C:\Users\yix\Des
 不想古法调试的话可以配置一下vscode的tasks.json和launch.json，我将mingw的完整实现放在了.vscode中并且上传了，使用时记得修改当前需要调试的exe路径以及gdb所在的路径。
 
 效果图：
+
 ![Alt Text](./png/debugbycode.png)
 
 <u>**请务必注意当前还有个小问题，gdb在调试时，假如进程被glfw独占的话，gdb的设置断点极有可能失效或者被block住，如下：**</u>
@@ -134,6 +135,7 @@ loop
 ~~这会导致vscode的intellisense出错，像如下这样：~~
 
 其实是vscode智能感知的问题，参考ps里的issue来解决这个问题.
+
 ![Alt Text](./png/duplicateInclude.png)
 
 至此，需要配置的东西大体都配置好了，可以进入到正式的代码学习中了。
@@ -147,6 +149,7 @@ ps:我在配置时其实还遇到了是不是给我报"namespace "std" has no me
 简要根据示例代码介绍了opengl的内部渲染管线流程，每个过程将会在后续章节细讲，本章主要就介绍了使用opengl绘制的常用过程，包括创建VAO、VBO以及绑定数据、将数据推送到渲染管线、自定义shader控制绘制过程等，大体很基础。
 
 triangle程序理论画面：
+
 ![Alt Text](./png/triangles.png)
 
 事实上还有一个名为keypress的程序，但是在第一章并没有提到，这个程序运行时按下<kbd>M</kbd>切换线框模式，画面和triangle别无二致所以不赘述
@@ -165,12 +168,16 @@ btw，我尽可能在代码中都使用了相对路径，但是由于有些lab�
 [glslViewer](https://github.com/patriciogonzalezvivo/glslViewer)
 
 2-1理论输出：
+
 ![Alt Text](./png/2-1.png)
+
 颜色随时间变化
 
 2-2中针对不同图元我们想启用不同的shader，如果用传统的方式的话，就是编译各种shader objects，针对我们想要的组合进行多种link，最后在绘制时通过glUseProgram切换上下文的shader program，事实上在第二章中介绍到有一种简化的接口ProgramPipeline可以快速做到同意效果
 2-2理论输出：
+
 ![Alt Text](./png/2-2.png)
+
 颜色随时间变化
 
 # chapter 3:
@@ -182,15 +189,20 @@ glEnable(GL_POINT_SPRITE);
 
 ## point
 draw point with gl_FragCoord:
+
 ![Alt Text](./png/3-1-1.png)
+
 draw point with gl_PointCoord:
+
 ![Alt Text](./png/3-1-2.png)
 ## line
 draw line loop:
+
 ![Alt Text](./png/3-1-3.png)
 
 ## triangle
 draw fans, strips, and triangles
+
 ![Alt Text](./png/3-1-4.png)
 
 set config
@@ -204,6 +216,7 @@ glPolygonMode(GL_BACK, GL_FILL);
 ```
 
 if uncomment last three lines you should get:
+
 ![Alt Text](./png/3-1-5.png)
 
 You may feel interested in how to judge if a cull is CCW or CW, you may found the answer in p214(chapter 3: triangles, strips and fans - "advanced" part)
