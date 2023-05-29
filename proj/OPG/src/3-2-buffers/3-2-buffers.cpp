@@ -1,6 +1,6 @@
 #include "Tools/AppTemplate.h"
 
-class PrimitivesExample : public ApplicationTemplate
+class BuffersExample : public ApplicationTemplate
 {
 private:
     // Member variables
@@ -15,8 +15,8 @@ private:
     };
 
 public:
-    PrimitivesExample(/* args */) {}
-    ~PrimitivesExample() {}
+    BuffersExample(/* args */) {}
+    ~BuffersExample() {}
     void Initialize(const char *title) override
     {
         ApplicationTemplate::Initialize(title);
@@ -87,8 +87,8 @@ public:
                              vertices, 0);
 
         ShaderInfo shaders[] = {
-            {GL_VERTEX_SHADER, "../../../src\\3-1-primitives\\shader.vert"},
-            {GL_FRAGMENT_SHADER, "../../../src\\3-1-primitives\\shader.frag"},
+            {GL_VERTEX_SHADER, "../../../src\\3-2-buffers\\shader.vert"},
+            {GL_FRAGMENT_SHADER, "../../../src\\3-2-buffers\\shader.frag"},
             {GL_NONE, NULL}};
 
         render_prog = LoadShaders(shaders);
@@ -168,6 +168,6 @@ public:
 //
 int main(int argc, char **argv)
 {
-    PrimitivesExample app;
+    BuffersExample app;
     app.AppStart();
 }

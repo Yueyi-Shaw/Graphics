@@ -181,5 +181,31 @@ glEnable(GL_POINT_SPRITE);
 关于找不到GL_POINT_SPRITE可以参考这个[issue](https://www.reddit.com/r/opengl/comments/480u1r/help_gl_pointcoordxy_always_zero_in_fragment/)
 
 ## point
-
+draw point with gl_FragCoord:
+![Alt Text](./png/3-1-1.png)
+draw point with gl_PointCoord:
+![Alt Text](./png/3-1-2.png)
 ## line
+draw line loop:
+![Alt Text](./png/3-1-3.png)
+
+## triangle
+draw fans, strips, and triangles
+![Alt Text](./png/3-1-4.png)
+
+set config
+```cpp
+glPolygonMode(GL_FRONT, GL_LINE);
+glPolygonMode(GL_BACK, GL_FILL);
+
+// glFrontFace(GL_CW);
+// glEnable(GL_CULL_FACE);
+// glCullFace(GL_BACK);
+```
+
+if uncomment last three lines you should get:
+![Alt Text](./png/3-1-5.png)
+
+You may feel interested in how to judge if a cull is CCW or CW, you may found the answer in p214(chapter 3: triangles, strips and fans - "advanced" part)
+
+## buffers

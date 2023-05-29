@@ -65,6 +65,7 @@ set(OPG_LABS
   2-1-shader
   2-2-advanced
   3-1-primitives
+  3-2-buffers
 )
 
 # add src to executable
