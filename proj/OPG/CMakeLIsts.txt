@@ -28,6 +28,18 @@ set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 add_subdirectory(external/glfw)
 
+# assimp
+set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+add_subdirectory(external/assimp)
+if(MSVC)
+    set_target_properties(assimp PROPERTIES OUTPUT_NAME assimp)
+endif()
+
+# imgui
+add_subdirectory(external/imgui)
+target_link_libraries(imgui PUBLIC glfw)
+
 #----------------------------------------------------BUILD OWN LIBS-----------------------------------------------------------
 # vermilion
 add_library(vermilion
@@ -44,12 +56,14 @@ add_library(vermilion
 #include
 include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(external/glfw/include)
+include_directories(external/assimp/include)
+include_directories(external/imgui)
 
 #----------------------------------------------------LINKING LIBS PATH-----------------------------------------------------------
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 #----------------------------------------------------LINK EXECUTABLE AND LIBS----------------------------------------------------
-set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 debug glfw3_d)
+set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 assimp imgui debug glfw3_d assimp_d imgui_d)
 
 #----------------------------------------------------COMPILE EXECUTABLE----------------------------------------------------------
 # header
@@ -60,6 +74,7 @@ set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 
 # lab list
 set(OPG_LABS
+  0-1-imguiDemo
   1-1-keypress
   1-1-triangles
   2-1-shader
@@ -74,7 +89,7 @@ foreach(LAB ${OPG_LABS})
     set_property(TARGET ${LAB} PROPERTY DEBUG_POSTFIX _d)
     target_link_libraries(${LAB} ${LIBS})
     # Add dependency on glfw for OPG_LABS
-    add_dependencies(${LAB} glfw)
+    add_dependencies(${LAB} glfw assimp)
 endforeach(LAB)
 
 if (CMAKE_BUILD_TYPE MATCHES "Debug")
