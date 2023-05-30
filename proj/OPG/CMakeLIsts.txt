@@ -6,6 +6,12 @@ project(OPG_LABS VERSION 1.0)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17")
 set(CMAKE_DEBUG_POSTFIX "_d")
 
+if(MSVC)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /Od")
+else()
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g0")
+endif()
+
 #----------------------------------------------------SET OUTPUT PATH------------------------------------------------------------
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -91,9 +97,16 @@ set(OPG_LABS
 )
 
 # add src to executable
+if(MSVC)
+    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:CONSOLE")
+endif()
+
 foreach(LAB ${OPG_LABS})
     add_executable(${LAB} WIN32 src/${LAB}/${LAB}.cpp ${COMMON_HEADERS})
     set_property(TARGET ${LAB} PROPERTY DEBUG_POSTFIX _d)
+    if(MSVC)
+        set_property(TARGET ${LAB} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+    endif()
     target_link_libraries(${LAB} ${LIBS})
     # Add dependency on glfw for OPG_LABS
     add_dependencies(${LAB} glfw assimp)

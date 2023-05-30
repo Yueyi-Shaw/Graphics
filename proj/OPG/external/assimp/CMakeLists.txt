@@ -60,6 +60,9 @@ PROJECT(Assimp VERSION 5.2.4)
 
 # All supported options ###############################################
 
+# force build shared lib
+set(BUILD_SHARED_LIBS ON)
+
 OPTION( BUILD_SHARED_LIBS
   "Build package with shared libraries."
   ON
@@ -82,7 +85,7 @@ OPTION( ASSIMP_ANDROID_JNIIOSYSTEM
 )
 OPTION( ASSIMP_NO_EXPORT
   "Disable Assimp's export functionality."
-  OFF
+  ON
 )
 OPTION( ASSIMP_BUILD_ZLIB
   "Build your own zlib"
