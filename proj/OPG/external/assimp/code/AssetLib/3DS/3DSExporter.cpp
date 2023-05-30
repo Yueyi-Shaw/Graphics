@@ -55,6 +55,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <assimp/IOSystem.hpp>
 
 #include <memory>
+#include <assimp/Exceptional.h>
 
 namespace Assimp {
 

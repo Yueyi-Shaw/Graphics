@@ -28,7 +28,7 @@
         {
             "label": "make",
             "type": "shell",
-            "command": "make",
+            "command": "make -j4",
             "args": [],
             "options": {
                 "cwd": "${workspaceFolder}\\build\\mingw64"

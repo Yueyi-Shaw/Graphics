@@ -1,111 +1,30 @@
-//////////////////////////////////////////////////////////////////////
-//
-//  triangles.cpp
-//
-//////////////////////////////////////////////////////////////////////
-
-#include "vgl.h"
-#include "LoadShaders.h"
-#include "Tools/DebugConsole.h"
-
-enum VAO_IDs
-{
-    Triangles,
-    NumVAOs
-};
-enum Buffer_IDs
-{
-    ArrayBuffer,
-    NumBuffers
-};
-enum Attrib_IDs
-{
-    vPosition = 0
-};
-
-GLuint VAOs[NumVAOs];
-GLuint Buffers[NumBuffers];
-
-const GLuint NumVertices = 6;
-
-//--------------------------------------------------------------------
-//
-// init
-//
-
-void init(void)
-{
-    std::cout << "init start" << std::endl;
-    static const GLfloat vertices[NumVertices][2] =
-        {
-            {-0.90, -0.90}, // Triangle 1
-            {0.85, -0.90},
-            {-0.90, 0.85},
-            {0.90, -0.85}, // Triangle 2
-            {0.90, 0.90},
-            {-0.85, 0.90}};
-
-    glCreateVertexArrays(NumVAOs, VAOs);
-
-    glCreateBuffers(NumBuffers, Buffers);
-    glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices),
-                         vertices, 0);
-
-    ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "./media/shaders/triangles/triangles.vert"},
-        {GL_FRAGMENT_SHADER, "./media/shaders/triangles/triangles.frag"},
-        {GL_NONE, NULL}};
-
-    GLuint program = LoadShaders(shaders);
-    glUseProgram(program);
-
-    glBindVertexArray(VAOs[Triangles]);
-    glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT,
-                          GL_FALSE, 0, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(vPosition);
-    std::cout << "init end" << std::endl;
-}
-
-//--------------------------------------------------------------------
-//
-// display
-//
-
-void display(void)
-{
-    static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
-    glClearBufferfv(GL_COLOR, 0, black);
-
-    glBindVertexArray(VAOs[Triangles]);
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
-}
-
-//--------------------------------------------------------------------
-//
-// main
-//
+#include <assimp/Importer.hpp>  // C++ importer interface
+#include <assimp/scene.h>       // Output data structure
+#include <assimp/postprocess.h> // Post processing flags
+#include <iostream>
 
 int main(int argc, char **argv)
 {
-    DebugConsole console;
-    glfwInit();
+    // Create an instance of the Importer class
+    Assimp::Importer importer;
 
-    GLFWwindow *window = glfwCreateWindow(640, 480, "Triangles", NULL, NULL);
+    const char *pFile = "../../../models\\DragonAttenuation\\glTF-Binary\\DragonAttenuation.glb";
 
-    glfwMakeContextCurrent(window);
-    gl3wInit();
+    // And have it read the given file with some example postprocessing
+    // Usually - if speed is not the most important aspect for you - you'll
+    // probably to request more postprocessing than we do in this example.
+    const aiScene *scene = importer.ReadFile(pFile,
+                                             aiProcess_CalcTangentSpace |
+                                                 aiProcess_Triangulate |
+                                                 aiProcess_JoinIdenticalVertices |
+                                                 aiProcess_SortByPType);
 
-    init();
-
-    while (!glfwWindowShouldClose(window))
+    // If the import failed, report it
+    if (nullptr == scene)
     {
-        display();
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        std::cout << importer.GetErrorString() << std::endl;
+        return false;
     }
 
-    glfwDestroyWindow(window);
-
-    glfwTerminate();
+    // Now we can access the file's contents.
 }

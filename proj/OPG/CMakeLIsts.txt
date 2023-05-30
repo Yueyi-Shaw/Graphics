@@ -31,6 +31,12 @@ add_subdirectory(external/glfw)
 # assimp
 set(ASSIMP_BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(ASSIMP_INSTALL OFF CACHE BOOL "" FORCE)
+set(BUILD_ASSIMP_TOOLS OFF CACHE BOOL "" FORCE) # 不需要Assimp提供的工具
+set(ASSIMP_BUILD_ALL_IMPORTERS_BY_DEFAULT OFF) # 不编译所有导入器
+set(ASSIMP_BUILD_OBJ_IMPORTER ON CACHE BOOL "") # 编译OBJ导入器
+set(ASSIMP_BUILD_FBX_IMPORTER ON CACHE BOOL "") # 编译FBX导入器
+set(ASSIMP_BUILD_GLTF_IMPORTER ON CACHE BOOL "") # 编译GLTF导入器
+set(ASSIMP_NO_EXPORT ON CACHE BOOL "") # 关闭所有导出器
 add_subdirectory(external/assimp)
 if(MSVC)
     set_target_properties(assimp PROPERTIES OUTPUT_NAME assimp)
