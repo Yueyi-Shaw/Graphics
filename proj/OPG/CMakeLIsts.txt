@@ -52,6 +52,9 @@ endif()
 add_subdirectory(external/imgui)
 target_link_libraries(imgui PUBLIC glfw)
 
+# glm
+add_subdirectory(external/glm)
+
 #----------------------------------------------------BUILD OWN LIBS-----------------------------------------------------------
 # vermilion
 add_library(vermilion
@@ -70,6 +73,7 @@ include_directories(${CMAKE_SOURCE_DIR}/include)
 include_directories(external/glfw/include)
 include_directories(external/assimp/include)
 include_directories(external/imgui)
+include_directories(external/glm)
 
 #----------------------------------------------------LINKING LIBS PATH-----------------------------------------------------------
 link_directories(${CMAKE_BINARY_DIR}/lib)
@@ -88,6 +92,7 @@ set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
 set(OPG_LABS
   0-1-imguiDemo
   0-2-assimpDemo
+  0-3-glmDemo
   1-1-keypress
   1-1-triangles
   2-1-shader
