@@ -1,5 +1,5 @@
 #include "Tools/AppTemplate.h"
-
+#include "LoadShaders.h"
 class PrimitivesExample : public ApplicationTemplate
 {
 private:
@@ -15,92 +15,91 @@ private:
     };
 
 public:
-    PrimitivesExample(/* args */) {}
-    ~PrimitivesExample() {}
+    PrimitivesExample(/* args */)
+    {
+    }
+    ~PrimitivesExample()
+    {
+    }
     void Initialize(const char *title) override
     {
         ApplicationTemplate::Initialize(title);
         std::cout << "init start" << std::endl;
-        static const GLfloat vertices[52][2] =
-            {
-                // Points
-                {-0.8, -0.8},
-                {0.8, 0.8},
-                {0.8, -0.8},
-                {-0.8, 0.8},
-                // triangle
-                {0., 0.},
-                {0.05, 0.2},
-                {0.1, 0.},
-                {0.15, 0.2},
-                {0.2, 0.},
-                {0.25, 0.2},
-                {0.3, 0.},
-                {0.35, 0.2},
-                {0.4, 0.},
-                {0.45, 0.2},
-                {0.5, 0.},
-                {0.55, 0.2},
-                // triangle strip
-                {0., 0.3},
-                {0.05, 0.5},
-                {0.1, 0.3},
-                {0.15, 0.5},
-                {0.2, 0.3},
-                {0.25, 0.5},
-                {0.3, 0.3},
-                {0.35, 0.5},
-                {0.4, 0.3},
-                {0.45, 0.5},
-                {0.5, 0.3},
-                {0.55, 0.5},
-                // triangle fan
-                {0., 0.6},
-                {0.05, 0.8},
-                {0.1, 0.6},
-                {0.15, 0.8},
-                {0.2, 0.6},
-                {0.25, 0.8},
-                {0.3, 0.6},
-                {0.35, 0.8},
-                {0.4, 0.6},
-                {0.45, 0.8},
-                {0.5, 0.6},
-                {0.55, 0.8},
-                // triangle fan
-                {0., -0.6},
-                {0.05, -0.8},
-                {0.1, -0.6},
-                {0.15, -0.8},
-                {0.2, -0.6},
-                {0.25, -0.8},
-                {0.3, -0.6},
-                {0.35, -0.8},
-                {0.4, -0.6},
-                {0.45, -0.8},
-                {0.5, -0.6},
-                {0.55, -0.8}};
+        static const GLfloat vertices[52][2] = {// Points
+                                                {-0.8, -0.8},
+                                                {0.8, 0.8},
+                                                {0.8, -0.8},
+                                                {-0.8, 0.8},
+                                                // triangle
+                                                {0., 0.},
+                                                {0.05, 0.2},
+                                                {0.1, 0.},
+                                                {0.15, 0.2},
+                                                {0.2, 0.},
+                                                {0.25, 0.2},
+                                                {0.3, 0.},
+                                                {0.35, 0.2},
+                                                {0.4, 0.},
+                                                {0.45, 0.2},
+                                                {0.5, 0.},
+                                                {0.55, 0.2},
+                                                // triangle strip
+                                                {0., 0.3},
+                                                {0.05, 0.5},
+                                                {0.1, 0.3},
+                                                {0.15, 0.5},
+                                                {0.2, 0.3},
+                                                {0.25, 0.5},
+                                                {0.3, 0.3},
+                                                {0.35, 0.5},
+                                                {0.4, 0.3},
+                                                {0.45, 0.5},
+                                                {0.5, 0.3},
+                                                {0.55, 0.5},
+                                                // triangle fan
+                                                {0., 0.6},
+                                                {0.05, 0.8},
+                                                {0.1, 0.6},
+                                                {0.15, 0.8},
+                                                {0.2, 0.6},
+                                                {0.25, 0.8},
+                                                {0.3, 0.6},
+                                                {0.35, 0.8},
+                                                {0.4, 0.6},
+                                                {0.45, 0.8},
+                                                {0.5, 0.6},
+                                                {0.55, 0.8},
+                                                // triangle fan
+                                                {0., -0.6},
+                                                {0.05, -0.8},
+                                                {0.1, -0.6},
+                                                {0.15, -0.8},
+                                                {0.2, -0.6},
+                                                {0.25, -0.8},
+                                                {0.3, -0.6},
+                                                {0.35, -0.8},
+                                                {0.4, -0.6},
+                                                {0.45, -0.8},
+                                                {0.5, -0.6},
+                                                {0.55, -0.8}};
 
         glCreateVertexArrays(1, VAOs);
         glCreateBuffers(1, VBOs);
-        glNamedBufferStorage(VBOs[0], sizeof(vertices),
-                             vertices, 0);
+        glNamedBufferStorage(VBOs[0], sizeof(vertices), vertices, 0);
 
-        ShaderInfo shaders[] = {
-            {GL_VERTEX_SHADER, "../../../src\\3-1-primitives\\shader.vert"},
-            {GL_FRAGMENT_SHADER, "../../../src\\3-1-primitives\\shader.frag"},
-            {GL_NONE, NULL}};
+        ShaderInfo shaders[] = {{GL_VERTEX_SHADER, "../../../src\\3-1-primitives\\shader.vert"},
+                                {GL_FRAGMENT_SHADER, "../../../src\\3-1-primitives\\shader.frag"},
+                                {GL_NONE, NULL}};
 
         render_prog = LoadShaders(shaders);
 
-        u_timeLoc1 = glGetUniformLocation(render_prog, "u_time");
+        u_timeLoc1       = glGetUniformLocation(render_prog, "u_time");
         u_resolutionLoc1 = glGetUniformLocation(render_prog, "u_resolution");
 
         // VBO
         glBindVertexArray(VAOs[0]);
         glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-        glVertexAttribPointer(vPosition, 2, GL_FLOAT,
-                              GL_FALSE, 0, BUFFER_OFFSET(0));
+        glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
         glEnableVertexAttribArray(vPosition);
         std::cout << "init end" << std::endl;
     }

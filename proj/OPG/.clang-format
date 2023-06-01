@@ -1,0 +1,31 @@
+﻿---
+BasedOnStyle: Microsoft
+
+SortIncludes: false
+AccessModifierOffset: -4
+IndentWidth: 4
+TabWidth: 4
+AlignConsecutiveMacros: true
+AlignTrailingComments: true
+AllowAllArgumentsOnNextLine: true
+AlignConsecutiveAssignments: true
+AllowAllParametersOfDeclarationOnNextLine: true
+BreakBeforeBraces: Custom
+BraceWrapping:
+  AfterCaseLabel : true
+  AfterEnum: true
+  AfterClass: true
+  AfterNamespace : true
+  BeforeWhile: true
+  AfterUnion: true
+  AfterStruct: true
+  AfterExternBlock : true
+  BeforeElse : true
+  BeforeCatch: true
+  SplitEmptyFunction: true
+  AfterFunction: true
+  BeforeLambdaBody : true
+  AfterCaseLabel: true
+  AfterUnion : true
+
+...

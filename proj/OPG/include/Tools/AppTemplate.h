@@ -1,18 +1,20 @@
 #ifndef __APP_TEMPLATE_H__
 #define __APP_TEMPLATE_H__
 
-#include "vgl.h"
-#include "LoadShaders.h"
-#include "Tools/DebugConsole.h"
+#include "Tools/GLlib.h"
 
-const int WindowWidth = 800;
+const int WindowWidth  = 800;
 const int WindowHeight = 600;
 
 class ApplicationTemplate
 {
 protected:
-    inline ApplicationTemplate(void) {}
-    virtual ~ApplicationTemplate(void) {}
+    inline ApplicationTemplate(void)
+    {
+    }
+    virtual ~ApplicationTemplate(void)
+    {
+    }
     static ApplicationTemplate *app_instance;
     GLFWwindow *m_pWindow;
     DebugConsole m_console;
@@ -41,13 +43,8 @@ protected:
     }
 
 #ifdef _DEBUG
-    static void APIENTRY DebugOutputCallback(GLenum source,
-                                             GLenum type,
-                                             GLuint id,
-                                             GLenum severity,
-                                             GLsizei length,
-                                             const GLchar *message,
-                                             GLvoid *userParam)
+    static void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                             const GLchar *message, GLvoid *userParam)
     {
         OutputDebugStringA(message);
         OutputDebugStringA("\n");
@@ -67,7 +64,8 @@ public:
         {
             Display();
             glfwPollEvents();
-        } while (!glfwWindowShouldClose(m_pWindow));
+        }
+        while (!glfwWindowShouldClose(m_pWindow));
     }
 
     virtual void Initialize(const char *title = 0)
@@ -77,7 +75,6 @@ public:
 #ifdef _DEBUG
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
 #endif
-
         m_pWindow = glfwCreateWindow(WindowWidth, WindowHeight, title ? title : "OpenGL Application", nullptr, nullptr);
         glfwSetWindowUserPointer(m_pWindow, this);
         glfwSetWindowSizeCallback(m_pWindow, window_size_callback);
@@ -101,7 +98,9 @@ public:
         glfwSwapBuffers(m_pWindow);
     }
 
-    virtual void Finalize(void) {}
+    virtual void Finalize(void)
+    {
+    }
 
     virtual void Resize(int width, int height)
     {
