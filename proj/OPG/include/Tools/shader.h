@@ -120,7 +120,6 @@ Shader::Shader(ShaderInfo *sl)
         GLuint shaderId    = glCreateShader(entry->type);
         const char *source = shaderSource.c_str();
         glShaderSource(shaderId, 1, &source, nullptr);
-        delete[] source;
         glCompileShader(shaderId);
         GLint compilationStatus;
         glGetShaderiv(shaderId, GL_COMPILE_STATUS, &compilationStatus);
