@@ -1,5 +1,6 @@
 #include "Tools/AppTemplate.h"
 #include "YueyiLibs/shader.h"
+#include "YueyiLibs/model.h"
 class BuffersExample : public ApplicationTemplate
 {
 private:
@@ -7,6 +8,7 @@ private:
     Shader *mShader;
     GLuint VAOs[1];
     GLuint VBOs[1];
+    Model *mModel;
     enum Attrib_IDs
     {
         vPosition = 0
@@ -91,6 +93,10 @@ public:
 
         mShader = new Shader(shaders);
 
+        // load model
+        const char *pFile = "../../../models\\DragonAttenuation\\glTF-Binary\\DragonAttenuation.glb";
+        mModel            = new Model(pFile);
+
         // VBO
         glBindVertexArray(VAOs[0]);
         glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
@@ -108,31 +114,14 @@ public:
         float resolution[2] = {800, 600};
         mShader->setVec2("u_resolution", (GLfloat)resolution[0], (GLfloat)resolution[1]);
 
-        glPolygonMode(GL_FRONT, GL_LINE);
-        glPolygonMode(GL_BACK, GL_FILL);
+        // glPolygonMode(GL_FRONT, GL_LINE);
+        // glPolygonMode(GL_BACK, GL_FILL);
 
-        glFrontFace(GL_CW);
-        glEnable(GL_CULL_FACE);
-        glCullFace(GL_BACK);
+        // glFrontFace(GL_CW);
+        // glEnable(GL_CULL_FACE);
+        // glCullFace(GL_BACK);
 
-        // draw points
-        // glEnable(GL_POINT_SPRITE); // use gl_PointCoord to see effects
-        // glEnable(GL_PROGRAM_POINT_SIZE);
-        // glPointSize(64.0f);
-        // glBindVertexArray(VAOs[0]);
-        // glDrawArrays(GL_POINTS, 0, 4);
-
-        // draw lines
-        // glLineWidth(64.0f);
-        // glDrawArrays(GL_LINES, 0, 4);
-        // glDrawArrays(GL_LINE_LOOP, 0, 4);
-        // glDrawArrays(GL_LINE_STRIP, 0, 4);
-
-        // draw triangle
-        glDrawArrays(GL_TRIANGLES, 4, 12);
-        glDrawArrays(GL_TRIANGLE_STRIP, 16, 12);
-        glDrawArrays(GL_TRIANGLE_FAN, 28, 12);
-        glDrawArrays(GL_TRIANGLE_FAN, 40, 12);
+        mModel->Draw(*mShader);
         ApplicationTemplate::Display();
     }
 

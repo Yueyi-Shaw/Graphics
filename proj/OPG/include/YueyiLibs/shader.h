@@ -18,6 +18,7 @@ struct ShaderInfo
 class Shader
 {
 public:
+    GLuint mProgramId;
     Shader(ShaderInfo *);
     ~Shader();
 
@@ -95,7 +96,6 @@ public:
     }
 
 private:
-    GLuint mProgramId;
     std::unordered_map<std::string, GLint> mUniformMap;
 
     std::string readFile(const std::string &filePath) const;
