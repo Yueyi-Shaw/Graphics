@@ -1,6 +1,14 @@
 #include "Tools/AppTemplate.h"
 #include "YueyiLibs/shader.h"
 #include "YueyiLibs/model.h"
+#include "YueyiLibs/camera.h"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+// camera
+Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+
 class BuffersExample : public ApplicationTemplate
 {
 private:
@@ -9,6 +17,7 @@ private:
     GLuint VAOs[1];
     GLuint VBOs[1];
     Model *mModel;
+
     enum Attrib_IDs
     {
         vPosition = 0
@@ -87,8 +96,8 @@ public:
         glCreateBuffers(1, VBOs);
         glNamedBufferStorage(VBOs[0], sizeof(vertices), vertices, 0);
 
-        std::string vpath("../../../src/3-1-primitives/shader.vert");
-        std::string fpath("../../../src/3-1-primitives/shader.frag");
+        std::string vpath("../../../src/3-2-buffers/shader.vert");
+        std::string fpath("../../../src/3-2-buffers/shader.frag");
         ShaderInfo shaders[3] = {{GL_VERTEX_SHADER, vpath, 0}, {GL_FRAGMENT_SHADER, fpath, 0}, {GL_NONE, "", 0}};
 
         mShader = new Shader(shaders);
@@ -110,16 +119,23 @@ public:
         glClearBufferfv(GL_COLOR, 0, black);
 
         mShader->use();
-        mShader->setFloat("u_time", (GLfloat)glfwGetTime());
-        float resolution[2] = {800, 600};
-        mShader->setVec2("u_resolution", (GLfloat)resolution[0], (GLfloat)resolution[1]);
+        // mShader->setFloat("u_time", (GLfloat)glfwGetTime());
+        // float resolution[2] = {800, 600};
+        // mShader->setVec2("u_resolution", (GLfloat)resolution[0], (GLfloat)resolution[1]);
 
-        // glPolygonMode(GL_FRONT, GL_LINE);
-        // glPolygonMode(GL_BACK, GL_FILL);
+        // view/projection transformations
+        glm::mat4 projection =
+            glm::perspective(glm::radians(45.0f), (float)WindowWidth / (float)WindowHeight, 0.1f, 100.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+        mShader->setMat4("projection", projection);
+        mShader->setMat4("view", view);
 
-        // glFrontFace(GL_CW);
-        // glEnable(GL_CULL_FACE);
-        // glCullFace(GL_BACK);
+        // render the loaded model
+        glm::mat4 model = glm::mat4(1.0f);
+        model =
+            glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
+        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f)); // it's a bit too big for our scene, so scale it down
+        mShader->setMat4("model", model);
 
         mModel->Draw(*mShader);
         ApplicationTemplate::Display();

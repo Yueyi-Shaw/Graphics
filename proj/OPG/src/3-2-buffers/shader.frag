@@ -1,18 +1,12 @@
-#version 450 core
+#version 330 core
+out vec4 FragColor;
 
-out vec4 fColor;
+in vec2 TexCoords;
 
-uniform vec2 u_resolution;
-uniform float u_time;
+uniform sampler2D texture_diffuse1;
 
-void main(){
-    // vec2 st=gl_PointCoord.xy;
-    vec2 st=gl_FragCoord.xy/u_resolution.xy;
-    st.x*=u_resolution.x/u_resolution.y;
-
-    vec3 color=vec3(0.);
-
-    color=vec3(st.x,st.y,abs(sin(u_time)));
-
-    fColor=vec4(color,1);
+void main()
+{
+    // FragColor=texture(texture_diffuse1,TexCoords);
+    FragColor=vec4(1.f);
 }
