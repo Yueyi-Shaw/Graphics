@@ -1,5 +1,5 @@
 #include "Tools/AppTemplate.h"
-#include "Tools/shader.h"
+#include "YueyiLibs/shader.h"
 class BuffersExample : public ApplicationTemplate
 {
 private:
