@@ -82,6 +82,33 @@
             "preLaunchTask": "BuildDebug"
         },
         {
+            "name": "0-4-dragonDemo",
+            "type": "cppdbg",
+            "request": "launch",
+            //change the path to the exe you want to debug.
+            "program": "${config:exePath}0-4-dragonDemo_d.exe",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}\\build\\mingw64\\bin",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "gdb",
+            "miDebuggerPath": "${config:gdbPath}",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Set Disassembly Flavor to Intel",
+                    "text": "-gdb-set disassembly-flavor intel",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "BuildDebug"
+        },
+        {
             "name": "1-1-keypress",
             "type": "cppdbg",
             "request": "launch",
