@@ -11,7 +11,7 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX     = WindowWidth / 2.0f;
 float lastY     = WindowHeight / 2.0f;
 bool firstMouse = true;
-
+bool mouseDown  = false;
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -78,9 +78,9 @@ public:
 
         // render the loaded model
         glm::mat4 model = glm::mat4(1.0f);
-        model =
-            glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f)); // translate it down so it's at the center of the scene
-        model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f)); // it's a bit too big for our scene, so scale it down
+        model           = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
+        model           = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+        model           = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
         mShader->setMat4("model", model);
 
         mModel->Draw(*mShader);
@@ -100,8 +100,9 @@ public:
 
     void OnKey(int key, int scancode, int action, int mods)
     {
-        if (action == GLFW_PRESS)
+        if (action == GLFW_PRESS || action == GLFW_REPEAT)
         {
+            // LogMessage("GLFW EVENT:" + key);
             switch (key)
             {
             case GLFW_KEY_W:
@@ -124,6 +125,23 @@ public:
                 camera.ProcessKeyboard(RIGHT, deltaTime);
                 break;
             }
+            case GLFW_MOUSE_BUTTON_1:
+            {
+                mouseDown = true;
+                break;
+            }
+            }
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            // LogMessage("GLFW_RELEASE");
+            switch (key)
+            {
+            case GLFW_MOUSE_BUTTON_1:
+            {
+                mouseDown = false;
+                break;
+            }
             }
         }
 
@@ -140,6 +158,13 @@ public:
         float xpos = static_cast<float>(xposIn);
         float ypos = static_cast<float>(yposIn);
 
+        if (!mouseDown)
+        {
+            lastX = xpos;
+            lastY = ypos;
+            return;
+        }
+
         if (firstMouse)
         {
             lastX      = xpos;
@@ -154,6 +179,34 @@ public:
         lastY = ypos;
 
         camera.ProcessMouseMovement(xoffset, yoffset);
+    }
+
+    void OnMouseButton(int button, int action, int mods)
+    {
+        std::string content = "GLFW EVENT: " + to_string(action) + " KEY: " + to_string(button);
+        LogMessage(content.c_str());
+        if (action == GLFW_PRESS)
+        {
+            switch (button)
+            {
+            case GLFW_MOUSE_BUTTON_1:
+            {
+                mouseDown = true;
+                break;
+            }
+            }
+        }
+        else if (action == GLFW_RELEASE)
+        {
+            switch (button)
+            {
+            case GLFW_MOUSE_BUTTON_1:
+            {
+                mouseDown = false;
+                break;
+            }
+            }
+        }
     }
 };
 

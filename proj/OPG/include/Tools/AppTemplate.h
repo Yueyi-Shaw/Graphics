@@ -43,11 +43,17 @@ protected:
 
         pThis->OnScoll(xoffset, yoffset);
     }
-    static void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
+    static void cursor_callback(GLFWwindow *window, double xposIn, double yposIn)
     {
         ApplicationTemplate *pThis = (ApplicationTemplate *)glfwGetWindowUserPointer(window);
 
         pThis->OnMouseMove(xposIn, yposIn);
+    }
+    static void mouse_button_callback(GLFWwindow *window, int button, int action, int mods)
+    {
+        ApplicationTemplate *pThis = (ApplicationTemplate *)glfwGetWindowUserPointer(window);
+
+        pThis->OnMouseButton(button, action, mods);
     }
     unsigned int app_time()
     {
@@ -93,7 +99,8 @@ public:
         glfwSetKeyCallback(m_pWindow, key_callback);
         glfwSetCharCallback(m_pWindow, char_callback);
         glfwSetScrollCallback(m_pWindow, scroll_callback);
-        glfwSetCursorPosCallback(m_pWindow, mouse_callback);
+        glfwSetCursorPosCallback(m_pWindow, cursor_callback);
+        glfwSetMouseButtonCallback(m_pWindow, mouse_button_callback);
 
         glfwMakeContextCurrent(m_pWindow);
 
@@ -134,6 +141,10 @@ public:
     }
 
     virtual void OnMouseMove(double xoffset, double yoffset)
+    { /* NOTHING */
+    }
+
+    virtual void OnMouseButton(int button, int action, int mods)
     { /* NOTHING */
     }
 };

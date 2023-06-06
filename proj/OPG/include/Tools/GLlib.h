@@ -8,9 +8,6 @@
 // window
 #include <GLFW/glfw3.h>
 
-// math
-#include <glm/glm.hpp>
-
 #ifdef _DEBUG
 // console
 #include "Tools/DebugConsole.h"
