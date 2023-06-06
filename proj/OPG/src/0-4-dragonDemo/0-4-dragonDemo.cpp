@@ -40,6 +40,9 @@ public:
         ApplicationTemplate::Initialize(title);
         std::cout << "init start" << std::endl;
 
+        stbi_set_flip_vertically_on_load(true); // make sure you set this flag before load any models
+        glEnable(GL_DEPTH_TEST);
+
         std::string vpath("../../../src/0-4-dragonDemo/shader.vert");
         std::string fpath("../../../src/0-4-dragonDemo/shader.frag");
         ShaderInfo shaders[3] = {{GL_VERTEX_SHADER, vpath, 0}, {GL_FRAGMENT_SHADER, fpath, 0}, {GL_NONE, "", 0}};
@@ -50,8 +53,8 @@ public:
         const char *pFile = "../../../models/DragonAttenuation/glTF/DragonAttenuation.gltf";
         mModel            = new Model(pFile);
 
-        stbi_set_flip_vertically_on_load(true);
-        glEnable(GL_DEPTH_TEST);
+        // draw in wireframe
+        // glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
         std::cout << "init end" << std::endl;
     }

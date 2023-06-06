@@ -13,5 +13,4 @@ void main()
 {
     TexCoords=aTexCoords;
     gl_Position=projection*view*model*vec4(aPos,1.);
-    // gl_Position=vec4(aPos,1.);
 }
