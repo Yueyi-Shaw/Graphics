@@ -8,14 +8,19 @@
 
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+float lastX     = WindowWidth / 2.0f;
+float lastY     = WindowHeight / 2.0f;
+bool firstMouse = true;
+
+// timing
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
 
 class BuffersExample : public ApplicationTemplate
 {
 private:
     // Member variables
     Shader *mShader;
-    GLuint VAOs[1];
-    GLuint VBOs[1];
     Model *mModel;
 
     enum Attrib_IDs
@@ -34,67 +39,6 @@ public:
     {
         ApplicationTemplate::Initialize(title);
         std::cout << "init start" << std::endl;
-        static const GLfloat vertices[52][2] = {// Points
-                                                {-0.8, -0.8},
-                                                {0.8, 0.8},
-                                                {0.8, -0.8},
-                                                {-0.8, 0.8},
-                                                // triangle
-                                                {0., 0.},
-                                                {0.05, 0.2},
-                                                {0.1, 0.},
-                                                {0.15, 0.2},
-                                                {0.2, 0.},
-                                                {0.25, 0.2},
-                                                {0.3, 0.},
-                                                {0.35, 0.2},
-                                                {0.4, 0.},
-                                                {0.45, 0.2},
-                                                {0.5, 0.},
-                                                {0.55, 0.2},
-                                                // triangle strip
-                                                {0., 0.3},
-                                                {0.05, 0.5},
-                                                {0.1, 0.3},
-                                                {0.15, 0.5},
-                                                {0.2, 0.3},
-                                                {0.25, 0.5},
-                                                {0.3, 0.3},
-                                                {0.35, 0.5},
-                                                {0.4, 0.3},
-                                                {0.45, 0.5},
-                                                {0.5, 0.3},
-                                                {0.55, 0.5},
-                                                // triangle fan
-                                                {0., 0.6},
-                                                {0.05, 0.8},
-                                                {0.1, 0.6},
-                                                {0.15, 0.8},
-                                                {0.2, 0.6},
-                                                {0.25, 0.8},
-                                                {0.3, 0.6},
-                                                {0.35, 0.8},
-                                                {0.4, 0.6},
-                                                {0.45, 0.8},
-                                                {0.5, 0.6},
-                                                {0.55, 0.8},
-                                                // triangle fan
-                                                {0., -0.6},
-                                                {0.05, -0.8},
-                                                {0.1, -0.6},
-                                                {0.15, -0.8},
-                                                {0.2, -0.6},
-                                                {0.25, -0.8},
-                                                {0.3, -0.6},
-                                                {0.35, -0.8},
-                                                {0.4, -0.6},
-                                                {0.45, -0.8},
-                                                {0.5, -0.6},
-                                                {0.55, -0.8}};
-
-        glCreateVertexArrays(1, VAOs);
-        glCreateBuffers(1, VBOs);
-        glNamedBufferStorage(VBOs[0], sizeof(vertices), vertices, 0);
 
         std::string vpath("../../../src/3-2-buffers/shader.vert");
         std::string fpath("../../../src/3-2-buffers/shader.frag");
@@ -103,29 +47,31 @@ public:
         mShader = new Shader(shaders);
 
         // load model
-        const char *pFile = "../../../models\\DragonAttenuation\\glTF-Binary\\DragonAttenuation.glb";
+        const char *pFile = "../../../models/DragonAttenuation/glTF/DragonAttenuation.gltf";
         mModel            = new Model(pFile);
 
-        // VBO
-        glBindVertexArray(VAOs[0]);
-        glBindBuffer(GL_ARRAY_BUFFER, VBOs[0]);
-        glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-        glEnableVertexAttribArray(vPosition);
+        stbi_set_flip_vertically_on_load(true);
+        glEnable(GL_DEPTH_TEST);
+
         std::cout << "init end" << std::endl;
     }
     void Display(bool auto_redraw) override
     {
-        static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
-        glClearBufferfv(GL_COLOR, 0, black);
+        // per-frame time logic
+        // --------------------
+        float currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime          = currentFrame - lastFrame;
+        lastFrame          = currentFrame;
+
+        // render
+        // ------
+        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         mShader->use();
-        // mShader->setFloat("u_time", (GLfloat)glfwGetTime());
-        // float resolution[2] = {800, 600};
-        // mShader->setVec2("u_resolution", (GLfloat)resolution[0], (GLfloat)resolution[1]);
-
         // view/projection transformations
         glm::mat4 projection =
-            glm::perspective(glm::radians(45.0f), (float)WindowWidth / (float)WindowHeight, 0.1f, 100.0f);
+            glm::perspective(glm::radians(camera.Zoom), (float)WindowWidth / (float)WindowHeight, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         mShader->setMat4("projection", projection);
         mShader->setMat4("view", view);
@@ -145,13 +91,69 @@ public:
     {
         delete mShader;
         glUseProgram(0);
-        glDeleteVertexArrays(1, VAOs);
-        glDeleteBuffers(1, VBOs);
     }
 
     void Resize(int width, int height) override
     {
         glViewport(0, 0, width, height);
+    }
+
+    void OnKey(int key, int scancode, int action, int mods)
+    {
+        if (action == GLFW_PRESS)
+        {
+            switch (key)
+            {
+            case GLFW_KEY_W:
+            {
+                camera.ProcessKeyboard(FORWARD, deltaTime);
+                break;
+            }
+            case GLFW_KEY_S:
+            {
+                camera.ProcessKeyboard(BACKWARD, deltaTime);
+                break;
+            }
+            case GLFW_KEY_A:
+            {
+                camera.ProcessKeyboard(LEFT, deltaTime);
+                break;
+            }
+            case GLFW_KEY_D:
+            {
+                camera.ProcessKeyboard(RIGHT, deltaTime);
+                break;
+            }
+            }
+        }
+
+        ApplicationTemplate::OnKey(key, scancode, action, mods);
+    }
+
+    void OnScoll(double xoffset, double yoffset)
+    {
+        camera.ProcessMouseScroll(static_cast<float>(yoffset));
+    }
+
+    void OnMouseMove(double xposIn, double yposIn)
+    {
+        float xpos = static_cast<float>(xposIn);
+        float ypos = static_cast<float>(yposIn);
+
+        if (firstMouse)
+        {
+            lastX      = xpos;
+            lastY      = ypos;
+            firstMouse = false;
+        }
+
+        float xoffset = xpos - lastX;
+        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
+
+        lastX = xpos;
+        lastY = ypos;
+
+        camera.ProcessMouseMovement(xoffset, yoffset);
     }
 };
 

@@ -37,6 +37,18 @@ protected:
 
         pThis->OnChar(codepoint);
     }
+    static void scroll_callback(GLFWwindow *window, double xoffset, double yoffset)
+    {
+        ApplicationTemplate *pThis = (ApplicationTemplate *)glfwGetWindowUserPointer(window);
+
+        pThis->OnScoll(xoffset, yoffset);
+    }
+    static void mouse_callback(GLFWwindow *window, double xposIn, double yposIn)
+    {
+        ApplicationTemplate *pThis = (ApplicationTemplate *)glfwGetWindowUserPointer(window);
+
+        pThis->OnMouseMove(xposIn, yposIn);
+    }
     unsigned int app_time()
     {
         return (unsigned int)(glfwGetTime() * 1000.0);
@@ -80,6 +92,8 @@ public:
         glfwSetWindowSizeCallback(m_pWindow, window_size_callback);
         glfwSetKeyCallback(m_pWindow, key_callback);
         glfwSetCharCallback(m_pWindow, char_callback);
+        glfwSetScrollCallback(m_pWindow, scroll_callback);
+        glfwSetCursorPosCallback(m_pWindow, mouse_callback);
 
         glfwMakeContextCurrent(m_pWindow);
 
@@ -112,6 +126,14 @@ public:
     }
 
     virtual void OnChar(unsigned int codepoint)
+    { /* NOTHING */
+    }
+
+    virtual void OnScoll(double xoffset, double yoffset)
+    { /* NOTHING */
+    }
+
+    virtual void OnMouseMove(double xoffset, double yoffset)
     { /* NOTHING */
     }
 };
