@@ -1,32 +1,24 @@
 #include "Tools/AppTemplate.h"
 #include "YueyiLibs/shader.h"
-#include "YueyiLibs/model.h"
-#include "YueyiLibs/camera.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-// camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
-float lastX     = WindowWidth / 2.0f;
-float lastY     = WindowHeight / 2.0f;
-bool firstMouse = true;
-bool mouseDown  = false;
-// timing
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
+// Define USE_PRIMITIVE_RESTART to 0 to use two separate draw commands
+#define USE_PRIMITIVE_RESTART 0
 
 class BuffersExample : public ApplicationTemplate
 {
 private:
     // Member variables
-    Shader *mShader;
-    Model *mModel;
+    float aspect;
+    GLuint vao[1];
+    GLuint vbo[1];
+    GLuint ebo[1];
 
-    enum Attrib_IDs
-    {
-        vPosition = 0
-    };
+    GLint render_model_matrix_loc;
+    GLint render_projection_matrix_loc;
+    Shader *mShader;
 
 public:
     BuffersExample(/* args */)
@@ -43,47 +35,94 @@ public:
         std::string vpath("../../../src/3-2-buffers/shader.vert");
         std::string fpath("../../../src/3-2-buffers/shader.frag");
         ShaderInfo shaders[3] = {{GL_VERTEX_SHADER, vpath, 0}, {GL_FRAGMENT_SHADER, fpath, 0}, {GL_NONE, "", 0}};
+        mShader               = new Shader(shaders);
 
-        mShader = new Shader(shaders);
+        mShader->use();
 
-        // load model
-        const char *pFile = "../../../models/DragonAttenuation/glTF/DragonAttenuation.gltf";
-        mModel            = new Model(pFile);
+        // init data
+        // 8 corners of a cube, side length 2, centered on the origin
+        static const GLfloat cube_positions[] = {
+            -1.0f, -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f, 1.0f, 1.0f,
+            1.0f,  -1.0f, -1.0f, 1.0f, 1.0f,  -1.0f, 1.0f, 1.0f, 1.0f,  1.0f, -1.0f, 1.0f, 1.0f,  1.0f, 1.0f, 1.0f};
 
-        stbi_set_flip_vertically_on_load(true);
+        // Color for each vertex
+        static const GLfloat cube_colors[] = {1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                                              1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f,
+                                              0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.5f, 0.5f, 0.5f, 1.0f};
+
+        // Indices for the triangle strips
+        static const GLushort cube_indices[] = {
+            0,      1, 2, 3, 6, 7, 4, 5, // First strip
+            0xFFFF,                      // <<-- This is the restart index
+            2,      6, 0, 4, 1, 5, 3, 7  // Second strip
+        };
+
+        // Set up the element array buffer
+        glGenBuffers(1, ebo);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(cube_indices), cube_indices, GL_STATIC_DRAW);
+
+        // Set up the vertex attributes
+        glGenVertexArrays(1, vao);
+        glBindVertexArray(vao[0]);
+
+        glGenBuffers(1, vbo);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[0]);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(cube_positions) + sizeof(cube_colors), NULL, GL_STATIC_DRAW);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cube_positions), cube_positions);
+        glBufferSubData(GL_ARRAY_BUFFER, sizeof(cube_positions), sizeof(cube_colors), cube_colors);
+
+        glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
+        glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid *)sizeof(cube_positions));
+        glEnableVertexAttribArray(0);
+        glEnableVertexAttribArray(1);
+
+        // gl global settings
         glEnable(GL_DEPTH_TEST);
 
         std::cout << "init end" << std::endl;
     }
     void Display(bool auto_redraw) override
     {
-        // per-frame time logic
-        // --------------------
-        float currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime          = currentFrame - lastFrame;
-        lastFrame          = currentFrame;
+        float t        = float(app_time() & 0x1FFF) / float(0x1FFF);
+        static float q = 0.0f;
+        static const glm::vec3 X(1.0f, 0.0f, 0.0f);
+        static const glm::vec3 Y(0.0f, 1.0f, 0.0f);
+        static const glm::vec3 Z(0.0f, 0.0f, 1.0f);
 
-        // render
-        // ------
-        glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
+        // Setup
+        glEnable(GL_CULL_FACE);
+        glDisable(GL_DEPTH_TEST);
+
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        // Activate simple shading program
         mShader->use();
-        // view/projection transformations
-        glm::mat4 projection =
-            glm::perspective(glm::radians(camera.Zoom), (float)WindowWidth / (float)WindowHeight, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
-        mShader->setMat4("projection", projection);
-        mShader->setMat4("view", view);
 
-        // render the loaded model
-        glm::mat4 model = glm::mat4(1.0f);
-        model           = glm::translate(model, glm::vec3(0.0f, 0.0f, 0.0f));
-        model           = glm::rotate(model, glm::radians(90.0f), glm::vec3(1.0f, 0.0f, 0.0f));
-        model           = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-        mShader->setMat4("model", model);
+        // Set up the model and projection matrix
+        glm::mat4 model_matrix = glm::mat4(1.0f);
+        model_matrix           = glm::translate(model_matrix, glm::vec3(0.0f, 0.0f, -5.0f)) *
+                       glm::rotate(model_matrix, glm::radians(t * 360.0f), Y) *
+                       glm::rotate(model_matrix, glm::radians(t * 720.0f), Z);
+        glm::mat4 projection_matrix(glm::frustum(-1.0f, 1.0f, -aspect, aspect, 1.0f, 500.0f));
 
-        mModel->Draw(*mShader);
+        mShader->setMat4("model_matrix", model_matrix);
+        mShader->setMat4("projection_matrix", projection_matrix);
+
+        // Set up for a glDrawElements call
+        glBindVertexArray(vao[0]);
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo[0]);
+
+#if USE_PRIMITIVE_RESTART
+        // When primitive restart is on, we can call one draw command
+        glEnable(GL_PRIMITIVE_RESTART);
+        glPrimitiveRestartIndex(0xFFFF);
+        glDrawElements(GL_TRIANGLE_STRIP, 17, GL_UNSIGNED_SHORT, NULL);
+#else
+        // Without primitive restart, we need to call two draw commands
+        glDrawElements(GL_TRIANGLE_STRIP, 8, GL_UNSIGNED_SHORT, NULL);
+        glDrawElements(GL_TRIANGLE_STRIP, 8, GL_UNSIGNED_SHORT, (const GLvoid *)(9 * sizeof(GLushort)));
+#endif
         ApplicationTemplate::Display();
     }
 
@@ -91,122 +130,14 @@ public:
     {
         delete mShader;
         glUseProgram(0);
+        glDeleteVertexArrays(1, vao);
+        glDeleteBuffers(1, vbo);
     }
 
     void Resize(int width, int height) override
     {
         glViewport(0, 0, width, height);
-    }
-
-    void OnKey(int key, int scancode, int action, int mods)
-    {
-        if (action == GLFW_PRESS || action == GLFW_REPEAT)
-        {
-            // LogMessage("GLFW EVENT:" + key);
-            switch (key)
-            {
-            case GLFW_KEY_W:
-            {
-                camera.ProcessKeyboard(FORWARD, deltaTime);
-                break;
-            }
-            case GLFW_KEY_S:
-            {
-                camera.ProcessKeyboard(BACKWARD, deltaTime);
-                break;
-            }
-            case GLFW_KEY_A:
-            {
-                camera.ProcessKeyboard(LEFT, deltaTime);
-                break;
-            }
-            case GLFW_KEY_D:
-            {
-                camera.ProcessKeyboard(RIGHT, deltaTime);
-                break;
-            }
-            case GLFW_MOUSE_BUTTON_1:
-            {
-                mouseDown = true;
-                break;
-            }
-            }
-        }
-        else if (action == GLFW_RELEASE)
-        {
-            // LogMessage("GLFW_RELEASE");
-            switch (key)
-            {
-            case GLFW_MOUSE_BUTTON_1:
-            {
-                mouseDown = false;
-                break;
-            }
-            }
-        }
-
-        ApplicationTemplate::OnKey(key, scancode, action, mods);
-    }
-
-    void OnScoll(double xoffset, double yoffset)
-    {
-        camera.ProcessMouseScroll(static_cast<float>(yoffset));
-    }
-
-    void OnMouseMove(double xposIn, double yposIn)
-    {
-        float xpos = static_cast<float>(xposIn);
-        float ypos = static_cast<float>(yposIn);
-
-        if (!mouseDown)
-        {
-            lastX = xpos;
-            lastY = ypos;
-            return;
-        }
-
-        if (firstMouse)
-        {
-            lastX      = xpos;
-            lastY      = ypos;
-            firstMouse = false;
-        }
-
-        float xoffset = xpos - lastX;
-        float yoffset = lastY - ypos; // reversed since y-coordinates go from bottom to top
-
-        lastX = xpos;
-        lastY = ypos;
-
-        camera.ProcessMouseMovement(xoffset, yoffset);
-    }
-
-    void OnMouseButton(int button, int action, int mods)
-    {
-        std::string content = "GLFW EVENT: " + to_string(action) + " KEY: " + to_string(button);
-        LogMessage(content.c_str());
-        if (action == GLFW_PRESS)
-        {
-            switch (button)
-            {
-            case GLFW_MOUSE_BUTTON_1:
-            {
-                mouseDown = true;
-                break;
-            }
-            }
-        }
-        else if (action == GLFW_RELEASE)
-        {
-            switch (button)
-            {
-            case GLFW_MOUSE_BUTTON_1:
-            {
-                mouseDown = false;
-                break;
-            }
-            }
-        }
+        aspect = float(height) / float(width);
     }
 };
 
