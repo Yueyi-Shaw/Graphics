@@ -100,6 +100,7 @@ set(OPG_LABS
   2-2-advanced
   3-1-primitives
   3-2-buffers
+  3-3-drawCommands
 )
 
 # add src to executable
