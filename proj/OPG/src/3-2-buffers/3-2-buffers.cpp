@@ -7,6 +7,21 @@
 // Define USE_PRIMITIVE_RESTART to 0 to use two separate draw commands
 #define USE_PRIMITIVE_RESTART 0
 
+static inline float random_float()
+{
+    float res;
+    unsigned int tmp;
+    static unsigned int seed = 0x13371337;
+
+    seed *= 16807;
+
+    tmp = seed ^ (seed >> 4) ^ (seed << 15);
+
+    *((unsigned int *)&res) = (tmp >> 9) | 0x3F800000;
+
+    return (res - 1.0f);
+}
+
 class BuffersExample : public ApplicationTemplate
 {
 private:
@@ -71,6 +86,15 @@ public:
         glBufferData(GL_ARRAY_BUFFER, sizeof(cube_positions) + sizeof(cube_colors), NULL, GL_STATIC_DRAW);
         glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(cube_positions), cube_positions);
         glBufferSubData(GL_ARRAY_BUFFER, sizeof(cube_positions), sizeof(cube_colors), cube_colors);
+
+        // chang color
+        static glm::vec4 *vertex_positions = (glm::vec4 *)glMapBuffer(GL_ARRAY_BUFFER, GL_WRITE_ONLY);
+        for (int n = 8; n < 16; n++)
+        {
+            vertex_positions[n] = glm::vec4(random_float() * 2.0f - 1.0f, random_float() * 2.0f - 1.0f,
+                                            random_float() * 2.0f - 1.0f, 1.0f);
+        }
+        glUnmapBuffer(GL_ARRAY_BUFFER);
 
         glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, NULL);
         glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 0, (const GLvoid *)sizeof(cube_positions));
