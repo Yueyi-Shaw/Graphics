@@ -222,3 +222,21 @@ if uncomment last three lines you should get:
 You may feel interested in how to judge if a cull is CCW or CW, you may found the answer in p214(chapter 3: triangles, strips and fans - "advanced" part)
 
 ## buffers
+try buffer IO functions provided by gl
+
+![Alt Text](./png/3-1-6.png)
+
+## drawCommands
+try different drawing api provided by gl
+
+![Alt Text](./png/3-1-7.png)
+
+# good news
+if you are reading here, there is good news for you that I decide to draw all following examples in a compact app which is named as "OPG-Examples". In this app you can view each rendering output by switching scenes with the awesome c++ lib "imgui". Also we will import more vivid models with the Assimp, which is a famous model im/export lib. I am planing to complete this in following weekends, wait for my good news.
+
+``` markdown
+_If you are reading this, I have good news for you - I have decided to showcase all of the following examples in a compact application named 'OPG-Examples'. In this app, you can view each rendering output by switching scenes with the awesome C++ library 'imgui'. Furthermore, we will import more vibrant models with the famous model import/export library, Assimp. I am planning to complete this in the upcoming weekends, so keep an eye out for my exciting updates_
+
+-gpt-3.5-turbo
+```
+Thanks to Chatgpt's polishing for my poor grammar, I will back with my upgraded project soon!
