@@ -118,17 +118,17 @@ public:
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         // DrawElements
-        model_matrix = glm::translate(model_matrix, glm::vec3(-1.0f, 0.0f, -5.0f));
+        model_matrix = glm::translate(model_matrix, glm::vec3(2.0f, 0.0f, 0.0f));
         mShader->setMat4("model_matrix", model_matrix);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL);
 
         // DrawElementsBaseVertex
-        model_matrix = glm::translate(model_matrix, glm::vec3(1.0f, 0.0f, -5.0f));
+        model_matrix = glm::translate(model_matrix, glm::vec3(2.0f, 0.0f, 0.0f));
         mShader->setMat4("model_matrix", model_matrix);
         glDrawElementsBaseVertex(GL_TRIANGLES, 3, GL_UNSIGNED_SHORT, NULL, 1);
 
         // DrawArraysInstanced
-        model_matrix = glm::translate(model_matrix, glm::vec3(3.0f, 0.0f, -5.0f));
+        model_matrix = glm::translate(model_matrix, glm::vec3(2.0f, 0.0f, 0.0f));
         mShader->setMat4("model_matrix", model_matrix);
         glDrawArraysInstanced(GL_TRIANGLES, 0, 3, 1);
         ApplicationTemplate::Display();
