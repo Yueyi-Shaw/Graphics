@@ -1,7 +1,13 @@
 #ifndef __APP_TEMPLATE_H__
 #define __APP_TEMPLATE_H__
 
-#include "Tools/GLlib.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#ifdef _DEBUG
+// console
+#include "Tools/DebugConsole.h"
+#endif /* _DEBUG */
+#define BUFFER_OFFSET(a) ((void *)(a))
 
 const int WindowWidth  = 800;
 const int WindowHeight = 600;
@@ -62,7 +68,7 @@ protected:
 
 #ifdef _DEBUG
     static void APIENTRY DebugOutputCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-                                             const GLchar *message, GLvoid *userParam)
+                                             const GLchar *message, const GLvoid *userParam)
     {
         OutputDebugStringA(message);
         OutputDebugStringA("\n");
@@ -104,12 +110,19 @@ public:
 
         glfwMakeContextCurrent(m_pWindow);
 
-        gl3wInit();
+        if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+        {
+            std::cout << "Failed to initialize OpenGL context" << std::endl;
+            return;
+        }
+        // glad populates global constants after loading to indicate,
+        // if a certain extension/version is available.
+        printf("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
 
         Resize(WindowWidth, WindowHeight);
 
 #ifdef _DEBUG
-        if (glDebugMessageCallbackARB != NULL)
+        if (glDebugMessageCallbackARB != nullptr)
             glDebugMessageCallbackARB(DebugOutputCallback, this);
 #endif
     }

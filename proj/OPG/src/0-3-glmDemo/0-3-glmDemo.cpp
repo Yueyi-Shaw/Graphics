@@ -42,7 +42,7 @@ int main()
     std::string userInput;
     while (true)
     {
-        std::getline(std::cin, userInput);
+        //std::getline(std::cin, userInput);
 
         if (!userInput.empty())
         {

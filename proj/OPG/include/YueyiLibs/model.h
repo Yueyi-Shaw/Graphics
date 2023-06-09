@@ -3,7 +3,7 @@
 
 #define STB_IMAGE_IMPLEMENTATION
 
-#include "Tools/GLlib.h"
+#include <glad/glad.h>
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -21,6 +21,12 @@
 #include <iostream>
 #include <map>
 #include <vector>
+
+#ifdef _DEBUG
+// console
+#include "Tools/DebugConsole.h"
+#endif /* _DEBUG */
+
 using namespace std;
 
 unsigned int TextureFromFile(const char *path, const string &directory, bool gamma = false);

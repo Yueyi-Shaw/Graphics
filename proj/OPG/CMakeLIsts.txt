@@ -56,16 +56,6 @@ target_link_libraries(imgui PUBLIC glfw)
 add_subdirectory(external/glm)
 
 #----------------------------------------------------BUILD OWN LIBS-----------------------------------------------------------
-# vermilion
-add_library(vermilion
-            vermilion/lib/gl3w.c
-            vermilion/lib/LoadShaders.cpp
-            vermilion/lib/targa.cpp
-            vermilion/lib/vdds.cpp
-            vermilion/lib/loadtexture.cpp
-            vermilion/lib/vermilion.cpp
-            vermilion/lib/vbm.cpp
-)
 
 #----------------------------------------------------INCLUDE FILES PATH----------------------------------------------------------
 #include
@@ -74,16 +64,17 @@ include_directories(external/glfw/include)
 include_directories(external/assimp/include)
 include_directories(external/imgui)
 include_directories(external/glm)
+include_directories(external/glad/include)
 
 #----------------------------------------------------LINKING LIBS PATH-----------------------------------------------------------
 link_directories(${CMAKE_BINARY_DIR}/lib)
 
 #----------------------------------------------------LINK EXECUTABLE AND LIBS----------------------------------------------------
-set(LIBS vermilion ${OPENGL_LIBRARIES} optimized glfw3 assimp imgui debug glfw3_d assimp_d imgui_d)
+set(LIBS ${OPENGL_LIBRARIES} optimized glfw3 assimp imgui debug glfw3_d assimp_d imgui_d)
 
 #----------------------------------------------------COMPILE EXECUTABLE----------------------------------------------------------
 # header
-set(COMMON_HEADERS include/vgl.h include/vapp.h)
+set(COMMON_LIB_SRC external/glad/src/glad.c)
 
 # run dir
 set(RUN_DIR ${PROJECT_SOURCE_DIR}/bin)
@@ -94,7 +85,6 @@ set(OPG_LABS
   0-2-assimpDemo
   0-3-glmDemo
   0-4-dragonDemo
-  1-1-keypress
   1-1-triangles
   2-1-shader
   2-2-advanced
@@ -108,20 +98,30 @@ if(MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /SUBSYSTEM:CONSOLE")
 endif()
 
+if (CMAKE_BUILD_TYPE MATCHES "Debug")
+    add_compile_definitions(_DEBUG)
+endif()
+
 foreach(LAB ${OPG_LABS})
-    add_executable(${LAB} WIN32 src/${LAB}/${LAB}.cpp ${COMMON_HEADERS})
+    add_executable(${LAB} WIN32 src/${LAB}/${LAB}.cpp ${COMMON_LIB_SRC})
     set_property(TARGET ${LAB} PROPERTY DEBUG_POSTFIX _d)
     if(MSVC)
         set_property(TARGET ${LAB} PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
     endif()
     target_link_libraries(${LAB} ${LIBS})
     # Add dependency on glfw for OPG_LABS
-    add_dependencies(${LAB} glfw assimp)
+    add_dependencies(${LAB} glfw assimp imgui)
 endforeach(LAB)
 
-if (CMAKE_BUILD_TYPE MATCHES "Debug")
-    add_compile_definitions(_DEBUG)
+# compile the Integrated project
+file(GLOB_RECURSE MY_APP_SRC "${CMAKE_CURRENT_SOURCE_DIR}/src/OPG-Examples/*.cpp")
+add_executable(OPG-Examples WIN32 ${MY_APP_SRC} ${COMMON_LIB_SRC})
+set_property(TARGET OPG-Examples PROPERTY DEBUG_POSTFIX _d)
+if(MSVC)
+    set_property(TARGET OPG-Examples PROPERTY VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 endif()
+target_link_libraries(OPG-Examples ${LIBS})
+add_dependencies(OPG-Examples glfw assimp imgui)
 
 ADD_CUSTOM_TARGET(debug ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Debug ${PROJECT_SOURCE_DIR})
 ADD_CUSTOM_TARGET(release ${CMAKE_COMMAND} -DCMAKE_BUILD_TYPE:STRING=Release ${PROJECT_SOURCE_DIR})

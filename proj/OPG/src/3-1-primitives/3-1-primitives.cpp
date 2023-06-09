@@ -1,10 +1,10 @@
 #include "Tools/AppTemplate.h"
-#include "LoadShaders.h"
+#include "YueyiLibs/shader.h"
 class PrimitivesExample : public ApplicationTemplate
 {
 private:
     // Member variables
-    GLuint render_prog;
+    Shader *mShader;
     GLuint VAOs[1];
     GLuint VBOs[1];
     GLuint u_timeLoc1;
@@ -87,14 +87,10 @@ public:
         glCreateBuffers(1, VBOs);
         glNamedBufferStorage(VBOs[0], sizeof(vertices), vertices, 0);
 
-        ShaderInfo shaders[] = {{GL_VERTEX_SHADER, "../../../src\\3-1-primitives\\shader.vert"},
-                                {GL_FRAGMENT_SHADER, "../../../src\\3-1-primitives\\shader.frag"},
-                                {GL_NONE, NULL}};
-
-        render_prog = LoadShaders(shaders);
-
-        u_timeLoc1       = glGetUniformLocation(render_prog, "u_time");
-        u_resolutionLoc1 = glGetUniformLocation(render_prog, "u_resolution");
+        std::string vpath("../../../src/3-1-primitives/shader.vert");
+        std::string fpath("../../../src/3-1-primitives/shader.frag");
+        ShaderInfo shaders[3] = {{GL_VERTEX_SHADER, vpath, 0}, {GL_FRAGMENT_SHADER, fpath, 0}, {GL_NONE, "", 0}};
+        mShader               = new Shader(shaders);
 
         // VBO
         glBindVertexArray(VAOs[0]);
@@ -107,17 +103,10 @@ public:
     {
         static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
         glClearBufferfv(GL_COLOR, 0, black);
-
-        glUseProgram(render_prog);
-        if (u_timeLoc1 != -1)
-        {
-            glUniform1f(u_timeLoc1, (GLfloat)glfwGetTime());
-        }
-        if (u_resolutionLoc1 != -1)
-        {
-            float resolution[2] = {800, 600};
-            glUniform2f(u_resolutionLoc1, (GLfloat)resolution[0], (GLfloat)resolution[1]);
-        }
+        // Activate simple shading program
+        mShader->use();
+        mShader->setFloat("u_time", (GLfloat)glfwGetTime());
+        mShader->setVec2("u_resolution", 800.0f, 600.0f);
 
         glPolygonMode(GL_FRONT, GL_LINE);
         glPolygonMode(GL_BACK, GL_FILL);
@@ -150,7 +139,7 @@ public:
     void Finalize(void) override
     {
         glUseProgram(0);
-        glDeleteProgram(render_prog);
+        delete mShader;
         glDeleteVertexArrays(1, VAOs);
         glDeleteBuffers(1, VBOs);
     }

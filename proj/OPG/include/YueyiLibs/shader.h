@@ -1,7 +1,7 @@
-#ifndef __SHADER_H__
-#define __SHADER_H__
+#ifndef SHADER_H
+#define SHADER_H
 
-#include "Tools/GLlib.h"
+#include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -11,6 +11,11 @@
 #include <sstream>
 #include <string>
 #include <unordered_map>
+
+#ifdef _DEBUG
+// console
+#include "Tools/DebugConsole.h"
+#endif /* _DEBUG */
 
 struct ShaderInfo
 {
@@ -210,4 +215,4 @@ void Shader::cacheUniformLocation(const std::string &name)
     }
 }
 
-#endif //__SHADER_H__
+#endif // SHADER_H

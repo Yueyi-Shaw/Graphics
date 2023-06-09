@@ -30,9 +30,6 @@ private:
     GLuint vao[1];
     GLuint vbo[1];
     GLuint ebo[1];
-
-    GLint render_model_matrix_loc;
-    GLint render_projection_matrix_loc;
     Shader *mShader;
 
 public:

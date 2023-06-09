@@ -4,8 +4,9 @@
 //
 //////////////////////////////////////////////////////////////////////
 
-#include "vgl.h"
-#include "LoadShaders.h"
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include "YueyiLibs/shader.h"
 #include "Tools/DebugConsole.h"
 
 enum VAO_IDs
@@ -27,10 +28,9 @@ GLuint VAOs[NumVAOs];
 GLuint Buffers[NumBuffers];
 
 const GLuint NumVertices = 6;
-const int WindowWidth = 640;
-const int WindowHeight = 480;
-GLuint u_timeLoc;
-GLuint u_resolutionLoc;
+const int WindowWidth    = 640;
+const int WindowHeight   = 480;
+Shader *mShader;
 
 //--------------------------------------------------------------------
 //
@@ -40,36 +40,25 @@ GLuint u_resolutionLoc;
 void init(void)
 {
     std::cout << "init start" << std::endl;
-    static const GLfloat vertices[NumVertices][2] =
-        {
-            {-1.0, -1.0}, // Triangle 1
-            {1.0, -1.0},
-            {-1.0, 1.0},
-            {1.0, -1.0}, // Triangle 2
-            {1.0, 1.0},
-            {-1.0, 1.0}};
+    static const GLfloat vertices[NumVertices][2] = {{-1.0, -1.0},                           // Triangle 1
+                                                     {1.0, -1.0},  {-1.0, 1.0}, {1.0, -1.0}, // Triangle 2
+                                                     {1.0, 1.0},   {-1.0, 1.0}};
 
     glCreateVertexArrays(NumVAOs, VAOs);
 
     glCreateBuffers(NumBuffers, Buffers);
-    glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices),
-                         vertices, 0);
+    glNamedBufferStorage(Buffers[ArrayBuffer], sizeof(vertices), vertices, 0);
 
-    ShaderInfo shaders[] = {
-        {GL_VERTEX_SHADER, "../../../src\\2-1-shader\\shader.vert"},
-        {GL_FRAGMENT_SHADER, "../../../src\\2-1-shader\\shader.frag"},
-        {GL_NONE, NULL}};
+    std::string vpath("../../../src/2-1-shader/shader.vert");
+    std::string fpath("../../../src/2-1-shader/shader.frag");
+    ShaderInfo shaders[3] = {{GL_VERTEX_SHADER, vpath, 0}, {GL_FRAGMENT_SHADER, fpath, 0}, {GL_NONE, "", 0}};
+    mShader               = new Shader(shaders);
 
-    GLuint program = LoadShaders(shaders);
-    glUseProgram(program);
-
-    u_timeLoc = glGetUniformLocation(program, "u_time");
-    u_resolutionLoc = glGetUniformLocation(program, "u_resolution");
+    mShader->use();
 
     glBindVertexArray(VAOs[Triangles]);
     glBindBuffer(GL_ARRAY_BUFFER, Buffers[ArrayBuffer]);
-    glVertexAttribPointer(vPosition, 2, GL_FLOAT,
-                          GL_FALSE, 0, BUFFER_OFFSET(0));
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, 0, (void*)(0));
     glEnableVertexAttribArray(vPosition);
     std::cout << "init end" << std::endl;
 }
@@ -83,15 +72,9 @@ void display(void)
     static const float black[] = {0.0f, 0.0f, 0.0f, 0.0f};
     glClearBufferfv(GL_COLOR, 0, black);
 
-    if (u_timeLoc != -1)
-    {
-        glUniform1f(u_timeLoc, (float)glfwGetTime());
-    }
-    if (u_resolutionLoc != -1)
-    {
-        float resolution[2] = {WindowWidth, WindowHeight};
-        glUniform2fv(u_resolutionLoc, 1, resolution);
-    }
+    mShader->use();
+    mShader->setFloat("u_time", (GLfloat)glfwGetTime());
+    mShader->setVec2("u_resolution", 800.0f, 600.0f);
 
     glBindVertexArray(VAOs[Triangles]);
     glDrawArrays(GL_TRIANGLES, 0, NumVertices);
@@ -109,7 +92,14 @@ int main(int argc, char **argv)
     GLFWwindow *window = glfwCreateWindow(WindowWidth, WindowHeight, "Shader", NULL, NULL);
 
     glfwMakeContextCurrent(window);
-    gl3wInit();
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize OpenGL context" << std::endl;
+        return -1;
+    }
+    // glad populates global constants after loading to indicate,
+    // if a certain extension/version is available.
+    printf("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
 
     init();
 
@@ -123,4 +113,6 @@ int main(int argc, char **argv)
     glfwDestroyWindow(window);
 
     glfwTerminate();
+
+    delete mShader;
 }
