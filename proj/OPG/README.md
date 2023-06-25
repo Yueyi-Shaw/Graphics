@@ -232,11 +232,15 @@ try different drawing api provided by gl
 ![Alt Text](./png/3-1-7.png)
 
 # good news
-if you are reading here, there is good news for you that I decide to draw all following examples in a compact app which is named as "OPG-Examples". In this app you can view each rendering output by switching scenes with the awesome c++ lib "imgui". Also we will import more vivid models with the Assimp, which is a famous model im/export lib. I am planing to complete this in following weekends, wait for my good news.
+if you are reading here, there is good news for you that I decide to draw all following examples in a compact app which is named as "OPG-Examples". In this app you can view each rendering output by switching scenes with the awesome c++ lib "imgui". Also we will import more vivid models with the Assimp, which is a famous model im/export lib. I am planing to complete this in ~~following weekends~~ few months, wait for my good news.
 
 ``` markdown
 _If you are reading this, I have good news for you - I have decided to showcase all of the following examples in a compact application named 'OPG-Examples'. In this app, you can view each rendering output by switching scenes with the awesome C++ library 'imgui'. Furthermore, we will import more vibrant models with the famous model import/export library, Assimp. I am planning to complete this in the upcoming weekends, so keep an eye out for my exciting updates_
 
 -gpt-3.5-turbo
 ```
-Thanks to Chatgpt's polishing for my poor grammar, I will back with my upgraded project soon!
+Thanks to Chatgpt's polishing for my poor grammar, ~~I will back with my upgraded project soon!~~
+
+Actually I got some mess with my work last month and I had to spend a lot of time to deal with it. Now I can recover my updating step, I also decide to write a lab about RTG(Ray Tracing Gems) at the same time, the book and its code are open-source but there are still much work can be done in its [source repo](https://github.com/Apress/ray-tracing-gems).
+
+Before we begin, it's important to note that these technologies are several years or even decades old, so hurry up.
