@@ -7,6 +7,8 @@
 #include <windows.h>
 
 #define FOREGROUND_YELLOW FOREGROUND_RED | FOREGROUND_GREEN
+#define FOREGROUND_PURPLE FOREGROUND_RED | FOREGROUND_BLUE
+#define FOREGROUND_CYAN   FOREGROUND_GREEN | FOREGROUND_BLUE
 #define FOREGROUND_WHITE  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
 
 class DebugConsole
@@ -41,7 +43,7 @@ public:
         SetConsoleTextAttribute(hConsole_, FOREGROUND_BLUE);
         std::cout << "Fileloading Message" << std::endl;
 
-        SetConsoleTextAttribute(hConsole_, FOREGROUND_GREEN);
+        SetConsoleTextAttribute(hConsole_, FOREGROUND_WHITE);
     }
 
     ~DebugConsole()
@@ -77,11 +79,14 @@ void LogFilePath(const char *content)
 
 void LogMessage(const char *content)
 {
-    HANDLE hConsole_ = GetStdHandle(STD_OUTPUT_HANDLE);
-    SetConsoleTextAttribute(hConsole_, FOREGROUND_GREEN);
     std::cout << content << std::endl;
 }
 
+void SetTextColor(WORD bit)
+{
+    HANDLE hConsole_ = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole_, bit);
+}
 #endif
 
 #endif

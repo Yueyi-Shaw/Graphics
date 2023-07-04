@@ -1,8 +1,11 @@
 {
     "exePath": "${workspaceFolder}\\build\\mingw64\\bin\\",
-    //"gdbPath": "D:\\mingw64\\bin\\gdb.exe",
-    "gdbPath": "E:\\mingw\\mingw64\\bin\\gdb.exe",
-    "clang-format.executable": "C:\\Users\\yueyi\\Desktop\\Graphics-Labs\\Tools\\clang-format.exe",
+    // office
+    "gdbPath": "D:\\mingw64\\bin\\gdb.exe",
+    "clang-format.executable": "C:\\Users\\yix\\Desktop\\Graphics-Labs\\Tools\\clang-format.exe",
+    // home
+    // "gdbPath": "E:\\mingw\\mingw64\\bin\\gdb.exe",
+    // "clang-format.executable": "C:\\Users\\yueyi\\Desktop\\Graphics-Labs\\Tools\\clang-format.exe",
     "files.associations": {
         "any": "cpp",
         "array": "cpp",

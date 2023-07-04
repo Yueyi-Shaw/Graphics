@@ -187,7 +187,7 @@ public:
     void OnMouseButton(int button, int action, int mods)
     {
         std::string content = "GLFW EVENT: " + to_string(action) + " KEY: " + to_string(button);
-        LogMessage(content.c_str());
+        // LogMessage(content.c_str());
         if (action == GLFW_PRESS)
         {
             switch (button)

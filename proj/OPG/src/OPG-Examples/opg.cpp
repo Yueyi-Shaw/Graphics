@@ -1,30 +1,40 @@
-#include "OPG.h"
-int main(int argc, char **argv)
+#include "opg.h"
+
+OPGExample::OPGExample()
 {
-    // init console
-    DebugConsole console;
+    init();
+}
 
-    // Initialize GLFW
+OPGExample::~OPGExample()
+{
+}
+
+void OPGExample::init()
+{
+    DEBUG_PRINTF("enter OPGExample::init()\n");
+    // init GLFW
+    DEBUG_PRINTF("OPGExample::init() load glfw\n");
     if (!glfwInit())
-        return 1;
-
+        DEBUG_PRINTF("OPGExample::init() glfwInit() failed\n");
     // Create a GLFW window
-    GLFWwindow *window = glfwCreateWindow(1280, 720, "ImGui Example", NULL, NULL);
+    GLFWwindow *window = glfwCreateWindow(1280, 720, "OPG Example", NULL, NULL);
     if (!window)
     {
         glfwTerminate();
-        return 1;
+        return;
     }
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize OpenGL context" << std::endl;
-        return -1;
+        DEBUG_PRINTF("Failed to initialize OpenGL context\n");
+        return;
     }
     // glad populates global constants after loading to indicate,
     // if a certain extension/version is available.
-    printf("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
+    DEBUG_PRINTF("OpenGL %d.%d\n", GLVersion.major, GLVersion.minor);
+
     // Initialize ImGui
+    DEBUG_PRINTF("OPGExample::init() load imgui\n");
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
@@ -37,6 +47,20 @@ int main(int argc, char **argv)
     bool show_demo_window    = true;
     bool show_another_window = false;
     ImVec4 clear_color       = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+}
+
+void OPGExample::loop()
+{
+}
+
+int main(int argc, char **argv)
+{
+#ifdef DEBUG
+    // init debug toolkits
+    OPGToolkits toolkits;
+#endif
+
+    OPGExample opg;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
