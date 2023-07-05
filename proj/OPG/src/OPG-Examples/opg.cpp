@@ -48,9 +48,6 @@ void OPGExample::init()
 
 void OPGExample::loop()
 {
-    if (!mInitSuccess)
-        return;
-    // Our state
     ImGuiIO &io = ImGui::GetIO();
     (void)io;
     bool show_demo_window    = true;
@@ -122,7 +119,7 @@ void OPGExample::loop()
 void OPGExample::cleanup()
 {
     DEBUG_PRINTF("enter OPGExample::cleanup()\n");
-    // Cleanup
+
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -133,6 +130,11 @@ void OPGExample::cleanup()
 
 void OPGExample::Start()
 {
+    if (!mInitSuccess)
+    {
+        ERR_PRINT("OPGExample::Start() : opg render is uninitlized.")
+        return;
+    }
     loop();
 }
 

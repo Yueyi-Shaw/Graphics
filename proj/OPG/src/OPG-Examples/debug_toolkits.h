@@ -13,9 +13,11 @@ class OPGToolkits
 {
 private:
     HANDLE hConsole_;
+
 public:
     OPGToolkits();
     ~OPGToolkits();
+    static void SetTextColor(WORD bit);
 };
 
 #endif

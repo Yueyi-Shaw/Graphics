@@ -17,6 +17,16 @@ OPGToolkits::OPGToolkits()
 
 OPGToolkits::~OPGToolkits()
 {
+    // wait key for exit
+    std::cout << "Press any key to exit...";
+    getchar();
+
     // Release the console
     FreeConsole();
+}
+
+void OPGToolkits::SetTextColor(WORD bit)
+{
+    HANDLE hConsole_ = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hConsole_, bit);
 }

@@ -16,8 +16,17 @@
 
 #ifdef DEBUG
 #define DEBUG_PRINTF(...) printf(__VA_ARGS__)
+#define ERR_PRINT(...)                                                                                                 \
+    do                                                                                                                 \
+    {                                                                                                                  \
+        OPGToolkits::SetTextColor(FOREGROUND_RED);                                                                     \
+        printf(__VA_ARGS__);                                                                                           \
+        OPGToolkits::SetTextColor(FOREGROUND_WHITE);                                                                   \
+    }                                                                                                                  \
+    while (0);
 #else
 #define DEBUG_PRINTF(...)
+#define ERR_PRINT(...)
 #endif
 
 class OPGExample
