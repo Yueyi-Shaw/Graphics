@@ -7,6 +7,7 @@ OPGExample::OPGExample()
 
 OPGExample::~OPGExample()
 {
+    cleanup();
 }
 
 void OPGExample::init()
@@ -17,13 +18,13 @@ void OPGExample::init()
     if (!glfwInit())
         DEBUG_PRINTF("OPGExample::init() glfwInit() failed\n");
     // Create a GLFW window
-    GLFWwindow *window = glfwCreateWindow(1280, 720, "OPG Example", NULL, NULL);
-    if (!window)
+    mWindow = glfwCreateWindow(1280, 720, "OPG Example", NULL, NULL);
+    if (!mWindow)
     {
         glfwTerminate();
         return;
     }
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(mWindow);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
         DEBUG_PRINTF("Failed to initialize OpenGL context\n");
@@ -37,33 +38,25 @@ void OPGExample::init()
     DEBUG_PRINTF("OPGExample::init() load imgui\n");
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO &io = ImGui::GetIO();
-    (void)io;
     ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 130");
+    ImGui_ImplGlfw_InitForOpenGL(mWindow, true);
+    ImGui_ImplOpenGL3_Init("#version 460");
 
-    // Our state
-    bool show_demo_window    = true;
-    bool show_another_window = false;
-    ImVec4 clear_color       = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    mInitSuccess = true;
+    DEBUG_PRINTF("OPGExample::init() %i \n", mInitSuccess);
 }
 
 void OPGExample::loop()
 {
-}
-
-int main(int argc, char **argv)
-{
-#ifdef DEBUG
-    // init debug toolkits
-    OPGToolkits toolkits;
-#endif
-
-    OPGExample opg;
-
-    // Main loop
-    while (!glfwWindowShouldClose(window))
+    if (!mInitSuccess)
+        return;
+    // Our state
+    ImGuiIO &io = ImGui::GetIO();
+    (void)io;
+    bool show_demo_window    = true;
+    bool show_another_window = false;
+    ImVec4 clear_color       = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+    while (!glfwWindowShouldClose(mWindow))
     {
         glfwPollEvents();
 
@@ -116,22 +109,41 @@ int main(int argc, char **argv)
         // Rendering
         ImGui::Render();
         int display_w, display_h;
-        glfwGetFramebufferSize(window, &display_w, &display_h);
+        glfwGetFramebufferSize(mWindow, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
         glClearColor(0.45f, 0.55f, 0.60f, 1.00f);
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        glfwSwapBuffers(window);
+        glfwSwapBuffers(mWindow);
     }
+}
 
+void OPGExample::cleanup()
+{
+    DEBUG_PRINTF("enter OPGExample::cleanup()\n");
     // Cleanup
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(mWindow);
     glfwTerminate();
+}
 
+void OPGExample::Start()
+{
+    loop();
+}
+
+int main(int argc, char **argv)
+{
+#ifdef DEBUG
+    // init debug toolkits
+    OPGToolkits toolkits;
+#endif
+
+    OPGExample opg;
+    opg.Start();
     return 0;
 }

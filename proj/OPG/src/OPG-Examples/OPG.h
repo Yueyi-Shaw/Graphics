@@ -22,16 +22,21 @@
 
 class OPGExample
 {
+protected:
+    GLFWwindow *mWindow;
+    bool mInitSuccess;
+
 private:
     void init();
     void loop();
+    void cleanup();
 
 public:
     OPGExample(/* args */);
     ~OPGExample();
-    void CheckoutScene();
-    void StartRenderring();
-    void StopRenderring();
+    void Checkout();
+    void Start();
+    void Stop();
     void LogCurrentSceneInfo();
 };
 
