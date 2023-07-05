@@ -12,18 +12,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define DEBUG
+#include <memory>
+#include "scene_manager.h"
+#include "test_scene.h"
 
 #ifdef DEBUG
-#define DEBUG_PRINTF(...) printf(__VA_ARGS__)
-#define ERR_PRINT(...)                                                                                                 \
-    do                                                                                                                 \
-    {                                                                                                                  \
-        OPGToolkits::SetTextColor(FOREGROUND_RED);                                                                     \
-        printf(__VA_ARGS__);                                                                                           \
-        OPGToolkits::SetTextColor(FOREGROUND_WHITE);                                                                   \
-    }                                                                                                                  \
-    while (0);
+
 #else
 #define DEBUG_PRINTF(...)
 #define ERR_PRINT(...)
@@ -32,6 +26,7 @@
 class OPGExample
 {
 protected:
+    SceneManager mSceneManager;
     GLFWwindow *mWindow;
     bool mInitSuccess;
 
@@ -39,6 +34,7 @@ private:
     void init();
     void loop();
     void cleanup();
+    void sceneui();
 
 public:
     OPGExample(/* args */);
