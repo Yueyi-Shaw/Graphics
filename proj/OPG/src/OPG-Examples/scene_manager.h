@@ -4,6 +4,8 @@
 #include <memory>
 #include <vector>
 #include <string>
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
 #include "imgui.h"
 #include "debug_toolkits.h"
 

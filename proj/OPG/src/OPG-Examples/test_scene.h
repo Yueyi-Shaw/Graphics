@@ -9,6 +9,8 @@ private:
 public:
     TestScene();
     ~TestScene();
+    void GLRendering() override;
+    void ImguiRendering() override;
 };
 
 #endif // TEST_SCENE_H

@@ -27,6 +27,7 @@ class OPGExample
 {
 protected:
     SceneManager mSceneManager;
+    std::shared_ptr<Scene> mScene;
     GLFWwindow *mWindow;
     bool mInitSuccess;
 

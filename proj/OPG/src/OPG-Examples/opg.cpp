@@ -59,6 +59,8 @@ void OPGExample::init()
     std::shared_ptr<TestScene> scene = std::make_shared<TestScene>();
     mSceneManager.RegisterScene(scene);
 
+    mScene = mSceneManager.GetCurrentScene();
+
     mInitSuccess = true;
     DEBUG_PRINTF("OPGExample::init() %i \n", mInitSuccess);
 }
@@ -69,8 +71,8 @@ void OPGExample::loop()
     {
         glfwPollEvents();
 
-        glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        // GL part
+        mScene->GLRendering();
 
         // IMGUI part
         ImGui_ImplOpenGL3_NewFrame();
@@ -79,6 +81,7 @@ void OPGExample::loop()
 
         // TODO: draw imgui stuff here
         sceneui();
+        mScene->ImguiRendering();
 
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
