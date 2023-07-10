@@ -50,9 +50,10 @@ std::vector<std::shared_ptr<Scene>> SceneManager::GetSceneList()
 
 void SceneManager::SwitchScene(uint16_t index)
 {
+    DEBUG_PRINTF("SceneManager: Switch to scene %d \n", index);
     if (index < 0 || index >= mSceneList.size())
     {
-        ERR_PRINT("scene index error.");
+        ERR_PRINT("scene index error.\n");
         return;
     }
     mCurrentScene = mSceneList[index];

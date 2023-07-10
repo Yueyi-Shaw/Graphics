@@ -16,4 +16,5 @@ void TestScene::GLRendering()
 
 void TestScene::ImguiRendering()
 {
+    ImGui::ShowDemoWindow();
 }

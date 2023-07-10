@@ -12,10 +12,17 @@ OPGExample::~OPGExample()
 
 void OPGExample::sceneui()
 {
+    static int last_scen_index = mCurrentIndex;
     if (ImGui::Begin("Scene Switcher"))
     {
-        if (ImGui::Combo("ScenesList", (int *)&mCurrentIndex, mSceneNameList.data(), mSceneNameList.size()))
+        if (ImGui::Combo("ScenesList", &mCurrentIndex, mSceneNameList.data(), mSceneNameList.size()))
         {
+            if (mCurrentIndex != last_scen_index)
+            {
+                mSceneManager.SwitchScene(mCurrentIndex);
+                mScene = mSceneManager.GetCurrentScene();
+                last_scen_index = mCurrentIndex;
+            }
         }
     }
     ImGui::End();
@@ -55,11 +62,9 @@ void OPGExample::init()
 
     // Load Scene
     std::shared_ptr<TestScene> scene1 = std::make_shared<TestScene>("TEST1");
-    std::shared_ptr<TestScene> scene2 = std::make_shared<TestScene>("TEST2");
-    std::shared_ptr<TestScene> scene3 = std::make_shared<TestScene>("TEST3");
+    std::shared_ptr<Scene> scene2     = std::make_shared<Scene>("TEST2");
     mSceneManager.RegisterScene(scene1);
     mSceneManager.RegisterScene(scene2);
-    mSceneManager.RegisterScene(scene3);
     mScene        = mSceneManager.GetCurrentScene();
     int scene_num = mSceneManager.GetSceneList().size();
     for (auto item : mSceneManager.GetSceneList())
