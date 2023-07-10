@@ -3,6 +3,7 @@
 
 #include <memory>
 #include <vector>
+#include <cstring>
 #include <string>
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
@@ -26,6 +27,7 @@ private:
 public:
     Scene(std::string name);
     ~Scene();
+    std::string GetName();
     virtual void GLRendering();
     virtual void ImguiRendering();
 };
@@ -42,6 +44,7 @@ public:
     ~SceneManager();
     void RegisterScene(std::shared_ptr<Scene> scene);
     std::shared_ptr<Scene> GetCurrentScene();
+    std::vector<std::shared_ptr<Scene>> GetSceneList();
     void SwitchScene(uint16_t index);
 };
 

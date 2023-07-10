@@ -7,7 +7,7 @@ class TestScene : public Scene
 {
 private:
 public:
-    TestScene();
+    TestScene(std::string name);
     ~TestScene();
     void GLRendering() override;
     void ImguiRendering() override;

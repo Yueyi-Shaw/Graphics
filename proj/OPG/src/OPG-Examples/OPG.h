@@ -26,9 +26,14 @@
 class OPGExample
 {
 protected:
+    GLFWwindow *mWindow;
+
+    // scenes
     SceneManager mSceneManager;
     std::shared_ptr<Scene> mScene;
-    GLFWwindow *mWindow;
+    std::vector<const char *> mSceneNameList;
+    int mCurrentIndex = 0;
+    // flag
     bool mInitSuccess;
 
 private:

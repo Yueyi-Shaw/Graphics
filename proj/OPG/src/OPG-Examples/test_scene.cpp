@@ -1,6 +1,6 @@
 #include "test_scene.h"
 
-TestScene::TestScene() : Scene("TEST_SCENE")
+TestScene::TestScene(std::string name = "TEST_SCENE") : Scene(name)
 {
 }
 

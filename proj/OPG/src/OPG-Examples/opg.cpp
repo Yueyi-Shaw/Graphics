@@ -14,9 +14,7 @@ void OPGExample::sceneui()
 {
     if (ImGui::Begin("Scene Switcher"))
     {
-        int currentScene    = 0;
-        const char *items[] = {"Scene 1", "Scene 2", "Scene 3"};
-        if (ImGui::Combo("Scenes", (int *)&currentScene, items, IM_ARRAYSIZE(items)))
+        if (ImGui::Combo("ScenesList", (int *)&mCurrentIndex, mSceneNameList.data(), mSceneNameList.size()))
         {
         }
     }
@@ -56,10 +54,20 @@ void OPGExample::init()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     // Load Scene
-    std::shared_ptr<TestScene> scene = std::make_shared<TestScene>();
-    mSceneManager.RegisterScene(scene);
-
-    mScene = mSceneManager.GetCurrentScene();
+    std::shared_ptr<TestScene> scene1 = std::make_shared<TestScene>("TEST1");
+    std::shared_ptr<TestScene> scene2 = std::make_shared<TestScene>("TEST2");
+    std::shared_ptr<TestScene> scene3 = std::make_shared<TestScene>("TEST3");
+    mSceneManager.RegisterScene(scene1);
+    mSceneManager.RegisterScene(scene2);
+    mSceneManager.RegisterScene(scene3);
+    mScene        = mSceneManager.GetCurrentScene();
+    int scene_num = mSceneManager.GetSceneList().size();
+    for (auto item : mSceneManager.GetSceneList())
+    {
+        const char *tmp = new char[item->GetName().length() + 1];
+        std::strcpy(const_cast<char *>(tmp), item->GetName().c_str());
+        mSceneNameList.push_back(tmp);
+    }
 
     mInitSuccess = true;
     DEBUG_PRINTF("OPGExample::init() %i \n", mInitSuccess);
@@ -93,6 +101,11 @@ void OPGExample::loop()
 void OPGExample::cleanup()
 {
     DEBUG_PRINTF("enter OPGExample::cleanup()\n");
+
+    for (const char *item : mSceneNameList)
+    {
+        delete[] item;
+    }
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
