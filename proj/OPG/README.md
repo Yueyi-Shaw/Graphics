@@ -244,3 +244,5 @@ Thanks to Chatgpt's polishing for my poor grammar, ~~I will back with my upgrade
 Actually I got some mess with my work last month and I had to spend a lot of time to deal with it. Now I can recover my updating step, I also decide to write a lab about RTG(Ray Tracing Gems) at the same time, the book and its code are open-source but there are still much work can be done in its [source repo](https://github.com/Apress/ray-tracing-gems).
 
 Before we begin, it's important to note that these technologies are several years or even decades old, so hurry up.
+
+For some reason, I decide to package up part of proj to a new repo and update the rest part of opg there.
