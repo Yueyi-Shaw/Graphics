@@ -20,7 +20,7 @@ void OPGExample::sceneui()
             if (mCurrentIndex != last_scen_index)
             {
                 mSceneManager.SwitchScene(mCurrentIndex);
-                mScene = mSceneManager.GetCurrentScene();
+                mScene          = mSceneManager.GetCurrentScene();
                 last_scen_index = mCurrentIndex;
             }
         }
@@ -61,8 +61,8 @@ void OPGExample::init()
     ImGui_ImplOpenGL3_Init("#version 460");
 
     // Load Scene
-    std::shared_ptr<TestScene> scene1 = std::make_shared<TestScene>("TEST1");
-    std::shared_ptr<Scene> scene2     = std::make_shared<Scene>("TEST2");
+    std::shared_ptr<Scene1> scene1 = std::make_shared<Scene1>("TEST1");
+    std::shared_ptr<Scene2> scene2 = std::make_shared<Scene2>("TEST2");
     mSceneManager.RegisterScene(scene1);
     mSceneManager.RegisterScene(scene2);
     mScene        = mSceneManager.GetCurrentScene();

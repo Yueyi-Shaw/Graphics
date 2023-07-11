@@ -1,21 +1,12 @@
 #ifndef SCENE_MANAGER_H
 #define SCENE_MANAGER_H
 
-#include <memory>
-#include <vector>
-#include <cstring>
-#include <string>
+#include "common.h"
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "imgui.h"
-#include "debug_toolkits.h"
-
-#ifdef DEBUG
-
-#else
-#define DEBUG_PRINTF(...)
-#define ERR_PRINT(...)
-#endif
+#include "backends/imgui_impl_glfw.h"
+#include "backends/imgui_impl_opengl3.h"
 
 class Scene
 {
@@ -23,13 +14,18 @@ protected:
     std::string mName;
 
 private:
-    /* data */
 public:
     Scene(std::string name);
     ~Scene();
     std::string GetName();
-    virtual void GLRendering();
-    virtual void ImguiRendering();
+    unsigned int GetTime()
+    {
+        return (unsigned int)(glfwGetTime() * 1000.0);
+    }
+    virtual void Init(){};
+    virtual void Clean(){};
+    virtual void GLRendering()    = 0;
+    virtual void ImguiRendering() = 0;
 };
 
 class SceneManager

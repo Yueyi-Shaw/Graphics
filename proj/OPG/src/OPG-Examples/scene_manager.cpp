@@ -13,16 +13,6 @@ std::string Scene::GetName()
     return mName;
 }
 
-void Scene::GLRendering()
-{
-    glClearColor(0.2f, 0.4f, 0.6f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-}
-
-void Scene::ImguiRendering()
-{
-}
-
 SceneManager::SceneManager()
 {
 }

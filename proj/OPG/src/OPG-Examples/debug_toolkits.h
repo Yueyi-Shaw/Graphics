@@ -10,8 +10,6 @@
 #define FOREGROUND_CYAN   FOREGROUND_GREEN | FOREGROUND_BLUE
 #define FOREGROUND_WHITE  FOREGROUND_RED | FOREGROUND_GREEN | FOREGROUND_BLUE
 
-#define DEBUG
-
 #ifdef DEBUG
 #define DEBUG_PRINTF(...) printf(__VA_ARGS__)
 #define ERR_PRINT(...)                                                                                                 \
