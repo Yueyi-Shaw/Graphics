@@ -93,6 +93,7 @@ public:
     void Finalize(void) override
     {
         delete mShader;
+        delete mModel;
         glUseProgram(0);
     }
 
